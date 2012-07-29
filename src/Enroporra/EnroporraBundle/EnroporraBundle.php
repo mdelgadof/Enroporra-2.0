@@ -1,6 +1,6 @@
 <?php
 
-namespace Enroporra\Bundle\EnroporraBundle;
+namespace Enroporra\EnroporraBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

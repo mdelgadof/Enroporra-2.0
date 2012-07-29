@@ -1,5 +1,5 @@
 parameters:
-#    enroporra.example.class: Enroporra\Bundle\EnroporraBundle\Example
+#    enroporra.example.class: Enroporra\EnroporraBundle\Example
 
 services:
 #    enroporra.example:

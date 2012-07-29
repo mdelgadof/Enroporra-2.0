@@ -1,6 +1,6 @@
 <?php
 
-namespace Enroporra\Bundle\EnroporraBundle\DependencyInjection;
+namespace Enroporra\EnroporraBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;

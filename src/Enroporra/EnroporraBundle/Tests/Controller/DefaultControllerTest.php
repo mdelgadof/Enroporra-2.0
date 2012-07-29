@@ -1,6 +1,6 @@
 <?php
 
-namespace Enroporra\Bundle\EnroporraBundle\Tests\Controller;
+namespace Enroporra\EnroporraBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 

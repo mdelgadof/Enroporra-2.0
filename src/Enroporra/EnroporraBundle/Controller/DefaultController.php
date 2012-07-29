@@ -1,6 +1,6 @@
 <?php
 
-namespace Enroporra\Bundle\EnroporraBundle\Controller;
+namespace Enroporra\EnroporraBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 

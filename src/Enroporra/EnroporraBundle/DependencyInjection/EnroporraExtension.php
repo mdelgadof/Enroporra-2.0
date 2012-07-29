@@ -1,6 +1,6 @@
 <?php
 
-namespace Enroporra\Bundle\EnroporraBundle\DependencyInjection;
+namespace Enroporra\EnroporraBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
