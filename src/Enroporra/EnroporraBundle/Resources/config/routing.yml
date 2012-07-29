@@ -1,3 +1,3 @@
 EnroporraBundle_homepage:
-    pattern:  /hello/{name}
+    pattern:  /
     defaults: { _controller: EnroporraBundle:Default:index }
