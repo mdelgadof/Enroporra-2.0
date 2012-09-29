@@ -4,5 +4,11 @@
 {% block columna_derecha %}{% include 'EnroporraBundle:Front:columna_twitter.html.twig' %}{% endblock %}
 {% block mensajes_extra %}{% include 'EnroporraBundle:Front:espana_tricampeona.html.twig' %}{% endblock %}
 {% block cuerpo %}
-Tralarí tralará.
+{% for noticia in noticias %}
+    <h1 class='red'>{{ noticia.titular }}</h1>
+    <p>{{ noticia.cuerpo|raw }}</p>
+{% else %}
+    <h1 class='red'>Os esperamos en 2014</h1>
+    <p>¿Podrá España sumar su cuarto título consecutivo? No esperamos que sea fácil, pero sí esperamos que estéis con nosotros para pasar un buen rato mientras se disputan los partidos. ¡Os esperamos!</p>
+{% endfor %}
 {% endblock %}
