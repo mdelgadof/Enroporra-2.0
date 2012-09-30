@@ -25,4 +25,15 @@ class DefaultController extends Controller
             array('noticias' => $noticias, 'base' => $this->base)
         );
     }
+
+    public function clasificacionAction()
+    {
+        /*$repNoticia = $this->getDoctrine()->getRepository('EnroporraBundle:Noticia');
+        $noticias = $repNoticia->findByActiva(1);*/
+
+        return $this->render('EnroporraBundle:Front:clasificacion.html.twig',
+            array('base' => $this->base)
+        );
+    }
+
 }
