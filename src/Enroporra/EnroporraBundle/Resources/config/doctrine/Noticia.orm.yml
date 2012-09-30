@@ -1,0 +1,20 @@
+Enroporra\EnroporraBundle\Entity\Noticia:
+    type: entity
+    table: null
+    repositoryClass: Enroporra\EnroporraBundle\Entity\NoticiaRepository
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        titular:
+            type: string
+            length: null
+        activa:
+            type: boolean
+        cuerpo:
+            type: text
+        fecha:
+            type: datetime
+    lifecycleCallbacks: {  }

@@ -7,9 +7,9 @@ Note: This is a free template released under the Creative Commons Attribution 3.
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>{% block titulo %}Enroporra - {{ competition }}{% endblock %}</title>
+<title>{% block titulo %}Enroporra - {{ base.competition }}{% endblock %}</title>
 <link href="{{ asset('bundles/enroporra/css/style.css') }}" rel="stylesheet" type="text/css" />
-<link href="{{ asset('bundles/enroporra/css/headers' ~ banner ~ '.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('bundles/enroporra/css/headers' ~ base.banner ~ '.css') }}" rel="stylesheet" type="text/css" />
 </head>
 <body>
 <div id="container">
@@ -81,7 +81,7 @@ Note: This is a free template released under the Creative Commons Attribution 3.
     <!-- end main -->
     <!-- footer -->
     <div id="footer">
-    <div id="left_footer">Copyright 1994-{{ year }} Enroporra
+    <div id="left_footer">Copyright 1994-{{ base.year }} Enroporra
     </div>
     <div id="right_footer">
     </div>

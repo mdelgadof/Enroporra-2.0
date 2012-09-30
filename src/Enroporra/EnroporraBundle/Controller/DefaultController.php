@@ -6,25 +6,23 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class DefaultController extends Controller
 {
+    public $base;
 
-    public function baseAction()
+    public function __construct()
     {
-        $banner = rand(1,12);
-        $year = date("Y");
-        $competition = "Eurocopa 2012";
-        $contact = "miguel.delgado@gmail.com";
-
-        return $this->render('EnroporraBundle:Front:index.html.twig',
-            array('banner' => $banner, 'year' => $year, 'competition' => $competition, 'contact' => $contact)
-        );
+        $this->base["banner"] = rand(1,12);
+        $this->base["year"] = date("Y");
+        $this->base["competition"] = "Eurocopa 2012";
+        $this->base["contact"] = "miguel.delgado@gmail.com";
     }
 
     public function indexAction()
     {
-        $noticias = array();
+        $repNoticia = $this->getDoctrine()->getRepository('EnroporraBundle:Noticia');
+        $noticias = $repNoticia->findByActiva(1);
 
         return $this->render('EnroporraBundle:Front:index.html.twig',
-            array('noticias' => $noticias)
+            array('noticias' => $noticias, 'base' => $this->base)
         );
     }
 }
