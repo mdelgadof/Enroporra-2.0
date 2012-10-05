@@ -8,16 +8,11 @@ class DefaultController extends Controller
 {
     public $base;
 
-    public function __construct()
-    {
-        $this->base["banner"] = rand(1,12);
-        $this->base["year"] = date("Y");
-        $this->base["competition"] = "Eurocopa 2012";
-        $this->base["contact"] = "miguel.delgado@gmail.com";
-    }
-
     public function indexAction()
     {
+        // Esta línea va aquí porque no la puedo meter en el constructor. Dice que no puedo aplicar el método get y sospecho que es porque no ha terminado todavía de construir el objeto
+        $this->base = $this->get("enroporra.base");
+
         $repNoticia = $this->getDoctrine()->getRepository('EnroporraBundle:Noticia');
         $noticias = $repNoticia->findByActiva(1);
 
@@ -25,15 +20,5 @@ class DefaultController extends Controller
             array('noticias' => $noticias, 'base' => $this->base)
         );
     }
-
-    /*public function clasificacionAction()
-    {
-        $repNoticia = $this->getDoctrine()->getRepository('EnroporraBundle:Noticia');
-        $noticias = $repNoticia->findByActiva(1);
-
-        return $this->render('EnroporraBundle:Front:clasificacion.html.twig',
-            array('base' => $this->base)
-        );
-    }*/
 
 }
