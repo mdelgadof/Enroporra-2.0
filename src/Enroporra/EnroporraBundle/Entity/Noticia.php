@@ -15,7 +15,7 @@ class Noticia
     private $id;
 
     /**
-     * @var string,cuerpo $titular
+     * @var string $titular
      */
     private $titular;
 
@@ -34,6 +34,11 @@ class Noticia
      */
     private $fecha;
 
+    /**
+     * @var integer $id_competicion
+     */
+    private $id_competicion;
+
 
     /**
      * Get id
@@ -48,7 +53,7 @@ class Noticia
     /**
      * Set titular
      *
-     * @param string,cuerpo $titular
+     * @param string $titular
      * @return Noticia
      */
     public function setTitular($titular)
@@ -60,7 +65,7 @@ class Noticia
     /**
      * Get titular
      *
-     * @return string,cuerpo
+     * @return string
      */
     public function getTitular()
     {
@@ -131,5 +136,27 @@ class Noticia
     public function getFecha()
     {
         return $this->fecha;
+    }
+
+    /**
+     * Set id_competicion
+     *
+     * @param integer $idCompeticion
+     * @return Equipo
+     */
+    public function setIdCompeticion($idCompeticion)
+    {
+        $this->id_competicion = $idCompeticion;
+        return $this;
+    }
+
+    /**
+     * Get id_competicion
+     *
+     * @return integer
+     */
+    public function getIdCompeticion()
+    {
+        return $this->id_competicion;
     }
 }

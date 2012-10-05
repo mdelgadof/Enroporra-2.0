@@ -8,7 +8,7 @@ _home:
 
 _clasificacion:
     pattern:  /clasificacion
-    defaults: { _controller: EnroporraBundle:Default:clasificacion }
+    defaults: { _controller: EnroporraBundle:Clasificacion:index }
 
 
 # Internal routing configuration to handle ESI

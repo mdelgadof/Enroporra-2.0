@@ -1,7 +1,7 @@
 parameters:
-#    enroporra.example.class: Enroporra\EnroporraBundle\Example
+    #enroporra.tildes.class: Enroporra\EnroporraBundle\Globales\ApellidosConTilde
 
 services:
-#    enroporra.example:
-#        class: %enroporra.example.class%
+    apellidos_con_tilde:
+        class: Enroporra\EnroporraBundle\Globales\ApellidosConTilde
 #        arguments: [@service_id, "plain_value", %parameter%]

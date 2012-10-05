@@ -1,0 +1,15 @@
+Enroporra\EnroporraBundle\Entity\Arbitro:
+    type: entity
+    table: null
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        nombre:
+            type: string
+            length: '64'
+        id_competicion:
+            type: integer
+    lifecycleCallbacks: {  }

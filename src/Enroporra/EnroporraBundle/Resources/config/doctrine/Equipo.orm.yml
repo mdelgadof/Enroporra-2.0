@@ -1,0 +1,18 @@
+Enroporra\EnroporraBundle\Entity\Equipo:
+    type: entity
+    table: null
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        nombre:
+            type: string
+            length: '128'
+        bandera:
+            type: string
+            length: '128'
+        id_competicion:
+            type: integer
+    lifecycleCallbacks: {  }

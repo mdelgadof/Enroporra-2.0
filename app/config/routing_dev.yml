@@ -4,7 +4,7 @@ _home:
 
 _clasificacion:
     pattern:  /clasificacion
-    defaults: { _controller: EnroporraBundle:Default:clasificacion }
+    defaults: { _controller: EnroporraBundle:Clasificacion:index }
 
 _wdt:
     resource: "@WebProfilerBundle/Resources/config/routing/wdt.xml"

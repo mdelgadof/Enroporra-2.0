@@ -1,0 +1,39 @@
+Enroporra\EnroporraBundle\Entity\Porrista:
+    type: entity
+    table: null
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        nombre:
+            type: string
+            length: '64'
+        apellido:
+            type: string
+            length: '64'
+        nick:
+            type: string
+            length: '64'
+        id_goleador:
+            type: integer
+        id_arbitro:
+            type: integer
+        id_competicion:
+            type: integer
+        pagado:
+            type: boolean
+        forma_pago:
+            type: string
+            length: '32'
+        telefono:
+            type: string
+            length: '32'
+        email:
+            type: string
+            length: '64'
+        comisionero:
+            type: string
+            length: '16'
+    lifecycleCallbacks: {  }

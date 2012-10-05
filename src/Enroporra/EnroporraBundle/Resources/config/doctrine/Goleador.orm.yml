@@ -1,0 +1,18 @@
+Enroporra\EnroporraBundle\Entity\Goleador:
+    type: entity
+    table: null
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        nombre:
+            type: string
+            length: '64'
+        apellido:
+            type: string
+            length: '64'
+        id_equipo:
+            type: integer
+    lifecycleCallbacks: {  }

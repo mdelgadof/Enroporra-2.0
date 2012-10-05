@@ -1,0 +1,14 @@
+Enroporra\EnroporraBundle\Entity\Gol:
+    type: entity
+    table: null
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        id_goleador:
+            type: integer
+        id_partido:
+            type: integer
+    lifecycleCallbacks: {  }

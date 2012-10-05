@@ -3,4 +3,4 @@ EnroporraBundle_homepage:
     defaults: { _controller: EnroporraBundle:Default:index }
 
     pattern:  /clasificacion
-    defaults: { _controller: EnroporraBundle:Default:clasificacion }
+    defaults: { _controller: EnroporraBundle:Clasificacion:index }
