@@ -3,6 +3,7 @@
 namespace Enroporra\EnroporraBundle\EntityExtended;
 
 use Enroporra\EnroporraBundle\Entity\Porrista;
+use Enroporra\EnroporraBundle\EntityExtended\cGoleador;
 
 class cPorrista extends Porrista
 {
@@ -12,8 +13,11 @@ class cPorrista extends Porrista
     private $bg_color;
     private $clasificacion;
     private $destacado;
+    private $goleador;
+    private $segunda_fase;
+    private $em;
 
-    function __construct($porrista)
+    function __construct($porrista, $em)
     {
         $this->setId($porrista->getId());
         $this->setNombre($porrista->getNombre());
@@ -27,6 +31,7 @@ class cPorrista extends Porrista
         $this->setTelefono($porrista->getTelefono());
         $this->setEmail($porrista->getEmail());
         $this->setComisionero($porrista->getComisionero());
+        $this->em = $em;
         $this->calculaPuntos();
     }
 
@@ -84,6 +89,28 @@ class cPorrista extends Porrista
     public function getPuntosDetalle()
     {
         return $this->puntos_detalle;
+    }
+
+    /**
+     * Set segundaFase
+     *
+     * @param string $segundaFase
+     * @return cPorrista
+     */
+    public function setSegundaFase($segundaFase)
+    {
+        $this->segunda_fase = $segundaFase;
+        return $this;
+    }
+
+    /**
+     * Get segundaFase
+     *
+     * @return string
+     */
+    public function getSegundaFase()
+    {
+        return $this->segunda_fase;
     }
 
     /**
@@ -150,6 +177,28 @@ class cPorrista extends Porrista
     public function getDestacado()
     {
         return $this->destacado;
+    }
+
+    /**
+     * Set goleador
+     *
+     * @param cGoleador $goleador
+     * @return cPorrista
+     */
+    public function setGoleador($goleador)
+    {
+        $this->goleador = $goleador;
+        return $this;
+    }
+
+    /**
+     * Get goleador
+     *
+     * @return cGoleador
+     */
+    public function getGoleador()
+    {
+        return $this->goleador;
     }
 
     public function calculaPuntos()

@@ -1,13 +1,13 @@
-{# empty Twig template #}
+{# Twig template para la barra horizontal de menú de todo el front #}
 {% block menu %}
         <ul>
             <li><a href="/">Home</a></li>
             <li><a href="/apuesta">Apuesta</a></li>
-            <li><a href="/bases" target='_blank'>Bases</a></li>
+            <li><a href="{{ base.competition.link_basis }}" target='_blank'>Bases</a></li>
             <li><a href="/cuenta">Mi cuenta</a></li>
             <li><a href="/amigos">Amigos</a></li>
             <li><a href="/clasificacion">Clasificación</a></li>
-            <li><a href="/partidos">Partidos</a></li>
+            <li><a href="{{ base.competition.link_matches }}" target='_blank'>Partidos</a></li>
             <li><a href='mailto:{{ base.contact }}'>Contacto</a></li>
         </ul>
 {% endblock %}

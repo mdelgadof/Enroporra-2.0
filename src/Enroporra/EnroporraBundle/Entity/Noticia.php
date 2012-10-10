@@ -5,7 +5,9 @@ namespace Enroporra\EnroporraBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Enroporra\EnroporraBundle\Entity\Noticia
+ * @ORM\Entity(repositoryClass="Enroporra\EnroporraBundle\Entity\NoticiaRepository")
+ * @ORM\Table(name="Noticia")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Noticia
 {

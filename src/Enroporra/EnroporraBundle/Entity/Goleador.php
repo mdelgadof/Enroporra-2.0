@@ -5,10 +5,13 @@ namespace Enroporra\EnroporraBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Enroporra\EnroporraBundle\Entity\Goleador
+ * @ORM\Entity(repositoryClass="Enroporra\EnroporraBundle\Entity\GoleadorRepository")
+ * @ORM\Table(name="Goleador")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Goleador
 {
+
     /**
      * @var integer $id
      */
@@ -29,11 +32,10 @@ class Goleador
      */
     private $id_equipo;
 
-
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -55,7 +57,7 @@ class Goleador
     /**
      * Get nombre
      *
-     * @return string 
+     * @return string
      */
     public function getNombre()
     {
@@ -77,7 +79,7 @@ class Goleador
     /**
      * Get apellido
      *
-     * @return string 
+     * @return string
      */
     public function getApellido()
     {
@@ -99,10 +101,11 @@ class Goleador
     /**
      * Get id_equipo
      *
-     * @return integer 
+     * @return integer
      */
     public function getIdEquipo()
     {
         return $this->id_equipo;
     }
+
 }

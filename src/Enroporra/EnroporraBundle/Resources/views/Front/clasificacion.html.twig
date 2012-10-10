@@ -4,5 +4,60 @@
 {% block columna_derecha %}{% endblock %}
 {% block mensajes_extra %}{% endblock %}
 {% block cuerpo %}
-Clasificación {{ clasificacion.tipo }}: {{ clasificacion.hay }}
+{%if clasificacion.numeroPartidos > 0 %}
+Clasificación <span class='red'>{{ clasificacion.tipo }}</span> a día de hoy (<span class='red'><b>{{ clasificacion.numeroPartidos}}</b></span> partidos disputados y apuntados) :<br><br>
+<table cellpadding=0 cellspacing=0 border=0>
+
+    <tr><td colspan='3'></td><td>Pts.</td><td>Apuesta</td><td>&nbsp;&nbsp;&nbsp;&nbsp;Apuesta en próximos partidos</td></tr>
+
+{% for porrista in clasificacion.porristas %}
+
+    <tr bgColor='{{ porrista.bgColor }}'>
+        <td nowrap>
+{% if porrista.getDestacado %}
+                <h2>&nbsp;<span class='red'><b>{{ porrista.getClasificacion }}</b></span></h2></td><td nowrap><h2>&nbsp;{{ porrista.getNombre }} [<span class='red'><b>{{ porrista.getPuntos }}</b></span>]&nbsp;</h2>
+{% else %}
+                &nbsp;<span class='red'><b>{{ porrista.getClasificacion }}</b></span></td><td nowrap>&nbsp;{{ porrista.getNombre }} [<span class='red'><b>{{ porrista.getPuntos }}</b></span>]&nbsp;
+{% endif %}
+{% if porrista.segundaFase == 'OK' %}
+                <span class='green'>2ª Fase OK</span>
+{% elseif porrista.segundaFase == 'KO' %}
+                <span class='black'>Problema rellenando segunda fase</span>
+{% endif %}
+{% if not porrista.getDestacado %}<br>{% endif %}
+{% for i in 1..porrista.goleador.getGoles if porrista.goleador.getGoles > 0 %}
+                <img src='{{ asset('bundles/enroporra/images/balon.gif') }}' width=10 height=10>
+{% endfor %}
+                &nbsp;<img src='{{ asset('bundles/enroporra/images/badges/' ~ porrista.goleador.getBandera) }}' width=10 height=10>
+                <span class='little'>{{ porrista.goleador.getNombre }} ({{ porrista.goleador.getNombreEquipo }}, {{ porrista.goleador.getGoles }})</span>
+
+            </td>
+            <td width='20'></td><td align='center' bgColor='#FFFFFF' style='padding: 0px 0px 0px 10px;'>
+                <div id='enlace_{{ porrista.getNick|upper }}'><a alt='Ver los puntos que lleva {{ porrista.getNombre }}' href='javascript:verDetalle("{{ porrista.getNick|upper }}")'><img src='{{ asset('bundles/enroporra/images/bombilla.jpg') }}' alt='Ver los puntos que lleva {{ porrista.getNombre }}' width=32 height=32></a></div>
+            </td><td align='center' bgColor='#FFFFFF'><a href='/cuenta/{{ porrista.getNick }}'><img src='{{ asset('bundles/enroporra/images/sobre.jpg') }}' alt='Ver la apuesta completa de {{ porrista.getNombre }}' width=32 height=32></a></td>
+            <td nowrap>&nbsp;Próximas apuestas&nbsp;</td>
+        </tr>
+        <tr><td colspan='5'>
+                <div id='detalle_{{ porrista.getNick|upper }}' style='display:none'><p></p></div>
+            </td>
+        </tr>
+{% endfor %}
+    </table>
+    <br><br>
+{% else %}
+    <p>Todavía no ha comenzado {{ base.competition.name }} en Enroporra :)</p>
+{% endif %}
+
+    <script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js'></script>
+    <script type='text/javascript'>
+    function verDetalle(nombre) {
+            $("#detalle_"+nombre).show();
+            $("#enlace_"+nombre).html("<a href='javascript:ocultarDetalle(\""+nombre+"\")'><img src='{{ asset('bundles/enroporra/images/bombillaoff.jpg') }}' alt='Ver los puntos que lleva "+nombre+"' width=32 height=32></a>");
+    }
+    function ocultarDetalle(nombre) {
+            $("#detalle_"+nombre).hide();
+            $("#enlace_"+nombre).html("<a href='javascript:verDetalle(\""+nombre+"\")'><img src='{{ asset('bundles/enroporra/images/bombilla.jpg') }}' alt='Ver los puntos que lleva "+nombre+"' width=32 height=32></a>");
+    }
+
+        </script>
 {% endblock %}

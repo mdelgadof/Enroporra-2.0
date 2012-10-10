@@ -8,20 +8,22 @@ class BaseEnroporra
     private $year;
     private $banner;
     private $contact;
+    private $active_competition;
     private $competition;
     private $cookie_amigos;
     private $cookie_nick;
 
-    public function __construct()
+    public function __construct($activeCompetition=2)
     {
         $this->year = date("Y");
         $this->banner = rand(1, 12);
         $this->contact = "comisionporra@gmail.com";
+        $this->active_competition = $activeCompetition;
 
         // Cambiar para poder usar varias competiciones. Todos los datos de competition deberían sacarse de BD
         $this->competition["name"] = "la Eurocopa 2012";
-        $this->competition["link_basis"] = "docs/bases_europorra_2012.pdf";
-        $this->competition["link_matches"] = "docs/partidos_euro2012.pdf";
+        $this->competition["link_basis"] = "/docs/bases_europorra_2012.pdf";
+        $this->competition["link_matches"] = "/docs/partidos_euro2012.pdf";
         $this->competition["second_draw_first_round"] = "cuartos de final";
         $this->competition["next_competition"] = "el Mundial 2014";
         $this->competition["bank_name"] = "Bankia";
@@ -53,6 +55,11 @@ class BaseEnroporra
     public function getCompetition()
     {
         return $this->competition;
+    }
+
+    public function getActiveCompetition()
+    {
+        return $this->active_competition;
     }
 
     public function getCookieAmigos()
