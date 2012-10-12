@@ -1,0 +1,111 @@
+<?php
+
+namespace Enroporra\EnroporraBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Enroporra\EnroporraBundle\Entity\Porrista
+ *
+ * @ORM\Table(name="Porrista")
+ * @ORM\Entity
+ */
+class Porrista
+{
+    /**
+     * @var integer $id
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var string $nombre
+     *
+     * @ORM\Column(name="nombre", type="string", length=64, nullable=false)
+     */
+    private $nombre;
+
+    /**
+     * @var string $apellido
+     *
+     * @ORM\Column(name="apellido", type="string", length=64, nullable=false)
+     */
+    private $apellido;
+
+    /**
+     * @var string $nick
+     *
+     * @ORM\Column(name="nick", type="string", length=64, nullable=false)
+     */
+    private $nick;
+
+    /**
+     * @var boolean $pagado
+     *
+     * @ORM\Column(name="pagado", type="boolean", nullable=false)
+     */
+    private $pagado;
+
+    /**
+     * @var string $formaPago
+     *
+     * @ORM\Column(name="forma_pago", type="string", length=32, nullable=false)
+     */
+    private $formaPago;
+
+    /**
+     * @var string $telefono
+     *
+     * @ORM\Column(name="telefono", type="string", length=32, nullable=false)
+     */
+    private $telefono;
+
+    /**
+     * @var string $email
+     *
+     * @ORM\Column(name="email", type="string", length=64, nullable=false)
+     */
+    private $email;
+
+    /**
+     * @var string $comisionero
+     *
+     * @ORM\Column(name="comisionero", type="string", length=16, nullable=false)
+     */
+    private $comisionero;
+
+    /**
+     * @var Arbitro
+     *
+     * @ORM\ManyToOne(targetEntity="Arbitro")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_arbitro", referencedColumnName="id")
+     * })
+     */
+    private $idArbitro;
+
+    /**
+     * @var Goleador
+     *
+     * @ORM\ManyToOne(targetEntity="Goleador")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_goleador", referencedColumnName="id")
+     * })
+     */
+    private $idGoleador;
+
+    /**
+     * @var Competicion
+     *
+     * @ORM\ManyToOne(targetEntity="Competicion")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_competicion", referencedColumnName="id")
+     * })
+     */
+    private $idCompeticion;
+
+
+}

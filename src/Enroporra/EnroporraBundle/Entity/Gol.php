@@ -6,23 +6,41 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Enroporra\EnroporraBundle\Entity\Gol
+ *
+ * @ORM\Table(name="Gol")
+ * @ORM\Entity
  */
 class Gol
 {
     /**
      * @var integer $id
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
-     * @var integer $id_goleador
+     * @var Partido
+     *
+     * @ORM\ManyToOne(targetEntity="Partido")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_partido", referencedColumnName="id")
+     * })
      */
-    private $id_goleador;
+    private $idPartido;
 
     /**
-     * @var integer $id_partido
+     * @var Goleador
+     *
+     * @ORM\ManyToOne(targetEntity="Goleador")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_goleador", referencedColumnName="id")
+     * })
      */
-    private $id_partido;
+    private $idGoleador;
+
 
 
     /**
@@ -36,46 +54,46 @@ class Gol
     }
 
     /**
-     * Set id_goleador
+     * Set idPartido
      *
-     * @param integer $idGoleador
+     * @param Enroporra\EnroporraBundle\Entity\Partido $idPartido
      * @return Gol
      */
-    public function setIdGoleador($idGoleador)
+    public function setIdPartido(\Enroporra\EnroporraBundle\Entity\Partido $idPartido = null)
     {
-        $this->id_goleador = $idGoleador;
+        $this->idPartido = $idPartido;
         return $this;
     }
 
     /**
-     * Get id_goleador
+     * Get idPartido
      *
-     * @return integer 
-     */
-    public function getIdGoleador()
-    {
-        return $this->id_goleador;
-    }
-
-    /**
-     * Set id_partido
-     *
-     * @param integer $idPartido
-     * @return Gol
-     */
-    public function setIdPartido($idPartido)
-    {
-        $this->id_partido = $idPartido;
-        return $this;
-    }
-
-    /**
-     * Get id_partido
-     *
-     * @return integer 
+     * @return Enroporra\EnroporraBundle\Entity\Partido 
      */
     public function getIdPartido()
     {
-        return $this->id_partido;
+        return $this->idPartido;
+    }
+
+    /**
+     * Set idGoleador
+     *
+     * @param Enroporra\EnroporraBundle\Entity\Goleador $idGoleador
+     * @return Gol
+     */
+    public function setIdGoleador(\Enroporra\EnroporraBundle\Entity\Goleador $idGoleador = null)
+    {
+        $this->idGoleador = $idGoleador;
+        return $this;
+    }
+
+    /**
+     * Get idGoleador
+     *
+     * @return Enroporra\EnroporraBundle\Entity\Goleador 
+     */
+    public function getIdGoleador()
+    {
+        return $this->idGoleador;
     }
 }

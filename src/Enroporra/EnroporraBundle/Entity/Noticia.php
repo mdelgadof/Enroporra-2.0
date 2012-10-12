@@ -5,47 +5,66 @@ namespace Enroporra\EnroporraBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="Enroporra\EnroporraBundle\Entity\NoticiaRepository")
+ * Enroporra\EnroporraBundle\Entity\Noticia
+ *
  * @ORM\Table(name="Noticia")
- * @ORM\HasLifecycleCallbacks()
+ * @ORM\Entity
  */
 class Noticia
 {
     /**
      * @var integer $id
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
      * @var string $titular
+     *
+     * @ORM\Column(name="titular", type="string", length=255, nullable=false)
      */
     private $titular;
 
     /**
      * @var boolean $activa
+     *
+     * @ORM\Column(name="activa", type="boolean", nullable=false)
      */
     private $activa;
 
     /**
      * @var text $cuerpo
+     *
+     * @ORM\Column(name="cuerpo", type="text", nullable=false)
      */
     private $cuerpo;
 
     /**
      * @var datetime $fecha
+     *
+     * @ORM\Column(name="fecha", type="datetime", nullable=false)
      */
     private $fecha;
 
     /**
-     * @var integer $id_competicion
+     * @var Competicion
+     *
+     * @ORM\ManyToOne(targetEntity="Competicion")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_competicion", referencedColumnName="id")
+     * })
      */
-    private $id_competicion;
+    private $idCompeticion;
+
 
 
     /**
      * Get id
      *
-     * @return integer
+     * @return integer 
      */
     public function getId()
     {
@@ -67,7 +86,7 @@ class Noticia
     /**
      * Get titular
      *
-     * @return string
+     * @return string 
      */
     public function getTitular()
     {
@@ -89,7 +108,7 @@ class Noticia
     /**
      * Get activa
      *
-     * @return boolean
+     * @return boolean 
      */
     public function getActiva()
     {
@@ -111,7 +130,7 @@ class Noticia
     /**
      * Get cuerpo
      *
-     * @return text
+     * @return text 
      */
     public function getCuerpo()
     {
@@ -133,7 +152,7 @@ class Noticia
     /**
      * Get fecha
      *
-     * @return datetime
+     * @return datetime 
      */
     public function getFecha()
     {
@@ -141,24 +160,24 @@ class Noticia
     }
 
     /**
-     * Set id_competicion
+     * Set idCompeticion
      *
-     * @param integer $idCompeticion
-     * @return Equipo
+     * @param Enroporra\EnroporraBundle\Entity\Competicion $idCompeticion
+     * @return Noticia
      */
-    public function setIdCompeticion($idCompeticion)
+    public function setIdCompeticion(\Enroporra\EnroporraBundle\Entity\Competicion $idCompeticion = null)
     {
-        $this->id_competicion = $idCompeticion;
+        $this->idCompeticion = $idCompeticion;
         return $this;
     }
 
     /**
-     * Get id_competicion
+     * Get idCompeticion
      *
-     * @return integer
+     * @return Enroporra\EnroporraBundle\Entity\Competicion 
      */
     public function getIdCompeticion()
     {
-        return $this->id_competicion;
+        return $this->idCompeticion;
     }
 }

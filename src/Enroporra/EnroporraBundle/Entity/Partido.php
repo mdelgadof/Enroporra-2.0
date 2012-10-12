@@ -6,58 +6,93 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Enroporra\EnroporraBundle\Entity\Partido
+ *
+ * @ORM\Table(name="Partido")
+ * @ORM\Entity
  */
 class Partido
 {
     /**
      * @var integer $id
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
      * @var date $fecha
+     *
+     * @ORM\Column(name="fecha", type="date", nullable=false)
      */
     private $fecha;
 
     /**
      * @var time $hora
+     *
+     * @ORM\Column(name="hora", type="time", nullable=false)
      */
     private $hora;
 
     /**
-     * @var integer $id_competicion
-     */
-    private $id_competicion;
-
-    /**
      * @var integer $fase
+     *
+     * @ORM\Column(name="fase", type="integer", nullable=false)
      */
     private $fase;
 
     /**
-     * @var integer $id_equipo1
-     */
-    private $id_equipo1;
-
-    /**
-     * @var integer $id_equipo2
-     */
-    private $id_equipo2;
-
-    /**
      * @var integer $resultado1
+     *
+     * @ORM\Column(name="resultado1", type="integer", nullable=false)
      */
     private $resultado1;
 
     /**
      * @var integer $resultado2
+     *
+     * @ORM\Column(name="resultado2", type="integer", nullable=false)
      */
     private $resultado2;
 
     /**
      * @var integer $quiniela
+     *
+     * @ORM\Column(name="quiniela", type="integer", nullable=false)
      */
     private $quiniela;
+
+    /**
+     * @var Equipo
+     *
+     * @ORM\ManyToOne(targetEntity="Equipo")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_equipo2", referencedColumnName="id")
+     * })
+     */
+    private $idEquipo2;
+
+    /**
+     * @var Competicion
+     *
+     * @ORM\ManyToOne(targetEntity="Competicion")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_competicion", referencedColumnName="id")
+     * })
+     */
+    private $idCompeticion;
+
+    /**
+     * @var Equipo
+     *
+     * @ORM\ManyToOne(targetEntity="Equipo")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_equipo1", referencedColumnName="id")
+     * })
+     */
+    private $idEquipo1;
+
 
 
     /**
@@ -115,28 +150,6 @@ class Partido
     }
 
     /**
-     * Set id_competicion
-     *
-     * @param integer $idCompeticion
-     * @return Partido
-     */
-    public function setIdCompeticion($idCompeticion)
-    {
-        $this->id_competicion = $idCompeticion;
-        return $this;
-    }
-
-    /**
-     * Get id_competicion
-     *
-     * @return integer 
-     */
-    public function getIdCompeticion()
-    {
-        return $this->id_competicion;
-    }
-
-    /**
      * Set fase
      *
      * @param integer $fase
@@ -156,50 +169,6 @@ class Partido
     public function getFase()
     {
         return $this->fase;
-    }
-
-    /**
-     * Set id_equipo1
-     *
-     * @param integer $idEquipo1
-     * @return Partido
-     */
-    public function setIdEquipo1($idEquipo1)
-    {
-        $this->id_equipo1 = $idEquipo1;
-        return $this;
-    }
-
-    /**
-     * Get id_equipo1
-     *
-     * @return integer 
-     */
-    public function getIdEquipo1()
-    {
-        return $this->id_equipo1;
-    }
-
-    /**
-     * Set id_equipo2
-     *
-     * @param integer $idEquipo2
-     * @return Partido
-     */
-    public function setIdEquipo2($idEquipo2)
-    {
-        $this->id_equipo2 = $idEquipo2;
-        return $this;
-    }
-
-    /**
-     * Get id_equipo2
-     *
-     * @return integer 
-     */
-    public function getIdEquipo2()
-    {
-        return $this->id_equipo2;
     }
 
     /**
@@ -266,5 +235,71 @@ class Partido
     public function getQuiniela()
     {
         return $this->quiniela;
+    }
+
+    /**
+     * Set idEquipo2
+     *
+     * @param Enroporra\EnroporraBundle\Entity\Equipo $idEquipo2
+     * @return Partido
+     */
+    public function setIdEquipo2(\Enroporra\EnroporraBundle\Entity\Equipo $idEquipo2 = null)
+    {
+        $this->idEquipo2 = $idEquipo2;
+        return $this;
+    }
+
+    /**
+     * Get idEquipo2
+     *
+     * @return Enroporra\EnroporraBundle\Entity\Equipo 
+     */
+    public function getIdEquipo2()
+    {
+        return $this->idEquipo2;
+    }
+
+    /**
+     * Set idCompeticion
+     *
+     * @param Enroporra\EnroporraBundle\Entity\Competicion $idCompeticion
+     * @return Partido
+     */
+    public function setIdCompeticion(\Enroporra\EnroporraBundle\Entity\Competicion $idCompeticion = null)
+    {
+        $this->idCompeticion = $idCompeticion;
+        return $this;
+    }
+
+    /**
+     * Get idCompeticion
+     *
+     * @return Enroporra\EnroporraBundle\Entity\Competicion 
+     */
+    public function getIdCompeticion()
+    {
+        return $this->idCompeticion;
+    }
+
+    /**
+     * Set idEquipo1
+     *
+     * @param Enroporra\EnroporraBundle\Entity\Equipo $idEquipo1
+     * @return Partido
+     */
+    public function setIdEquipo1(\Enroporra\EnroporraBundle\Entity\Equipo $idEquipo1 = null)
+    {
+        $this->idEquipo1 = $idEquipo1;
+        return $this;
+    }
+
+    /**
+     * Get idEquipo1
+     *
+     * @return Enroporra\EnroporraBundle\Entity\Equipo 
+     */
+    public function getIdEquipo1()
+    {
+        return $this->idEquipo1;
     }
 }

@@ -1,0 +1,50 @@
+ 1299  php app/console doctrine:database:create
+ 1301  php app/console doctrine:database:create
+ 1302  sudo php app/console doctrine:database:create
+ 1304  php app/console doctrine:generate:entity --entity="AcmeGuardaBundle:Producto" --fields="nombre:
+ 1305  php app/console doctrine:generate:entity --entity="EnroporraBundle:Noticia" --fields="titular:string,cuerpo:text,fecha:datetime,activa:enum('si','no')"
+ 1307  php app/console doctrine:schema:update --force
+ 1308  sudo php app/console doctrine:schema:update --force
+ 1377  php app/console doctrine:generate:entity --entity="EnroporraBundle:Arbitro"
+ 1378  php app/console doctrine:generate:entity --entity="EnroporraBundle:Competicion"
+ 1379  sudo php app/console doctrine:generate:entity --entity="EnroporraBundle:Competicion"
+ 1380  sudo php app/console doctrine:generate:entity --entity="EnroporraBundle:Equipo"
+ 1381  sudo php app/console doctrine:generate:entity --entity="EnroporraBundle:Gol"
+ 1382  sudo php app/console doctrine:generate:entity --entity="EnroporraBundle:Goleador"
+ 1383  sudo php app/console doctrine:generate:entity --entity="EnroporraBundle:Partido"
+ 1384  sudo php app/console doctrine:generate:entity --entity="EnroporraBundle:Porrista"
+ 1385  sudo php app/console doctrine:schema:update --force
+ 1386  sudo php app/console doctrine:change:entity --entity="EnroporraBundle:Noticia"
+ 1387  sudo php app/console doctrine:alter:entity
+ 1388  sudo php app/console doctrine:help
+ 1389  sudo php app/console doctrine
+ 1390  sudo php app/console doctrine:schema:update --force
+ 1407  php app/console container:debug
+ 1408  php app/console container:debug base_enroporra
+ 1409  php app/console container:debug apellidos_con_tilde
+ 1415  php app/console help doctrine
+ 1416  php app/console doctrine:help
+ 1417  php app/console help
+ 1418  php app/console help doctrine
+ 1419  php app/console help list
+ 1420  php app/console help list doctrine
+ 1421  php app/console help list Doctrine\ORM\Mapping
+ 1422  php app/console help list Doctrine
+ 1426  php app/console doctrine:mapping:convert yml ./src/Enroporra/EnroporraBundle/Resources/config/doctrine --from-database --force
+ 1428  php app/console doctrine:mapping:convert yml ./src/Enroporra/EnroporraBundle/Resources/config/doctrine --from-database --force
+ 1429  php app/console doctrine:mapping:import EnroporraBundle annotation
+ 1430  php app/console doctrine:mapping:convert yml ./src/Enroporra/EnroporraBundle/Resources/config/doctrine --from-database --force
+ 1431  php app/console doctrine:mapping:import EnroporraBundle annotation
+ 1432  php app/console help doctrine:mapping:import
+ 1433  php app/console help doctrine:mapping
+ 1434  php app/console help doctrine:mapping:convert
+ 1435  history | grep "php app/console" > history.txt
+ 1438  php app/console help doctrine:generate:entity
+ 1439  php app/console doctrine:generate:entity --entity=EnroporraBundle:Partido --format=annotation
+ 1440  php app/console doctrine:generate:entity --entity=EnroporraBundle:Partido --format=annotation --force
+ 1442  php app/console doctrine:generate:entity --entity=EnroporraBundle:Partido --format=annotation
+ 1444  php app/console help doctrine:generate:entity
+ 1445  php app/console help doctrine:update:entity
+ 1446  php app/console help doctrine:generate:entities EnroporraBundle
+ 1447  php app/console doctrine:generate:entities EnroporraBundle
+ 1452  history | grep "php app/console" > history.txt

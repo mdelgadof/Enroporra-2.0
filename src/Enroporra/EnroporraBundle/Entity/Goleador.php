@@ -5,37 +5,52 @@ namespace Enroporra\EnroporraBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="Enroporra\EnroporraBundle\Entity\GoleadorRepository")
+ * Enroporra\EnroporraBundle\Entity\Goleador
+ *
  * @ORM\Table(name="Goleador")
- * @ORM\HasLifecycleCallbacks()
+ * @ORM\Entity
  */
 class Goleador
 {
-
     /**
      * @var integer $id
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
      * @var string $nombre
+     *
+     * @ORM\Column(name="nombre", type="string", length=64, nullable=false)
      */
     private $nombre;
 
     /**
      * @var string $apellido
+     *
+     * @ORM\Column(name="apellido", type="string", length=64, nullable=false)
      */
     private $apellido;
 
     /**
-     * @var integer $id_equipo
+     * @var Equipo
+     *
+     * @ORM\ManyToOne(targetEntity="Equipo")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_equipo", referencedColumnName="id")
+     * })
      */
-    private $id_equipo;
+    private $idEquipo;
+
+
 
     /**
      * Get id
      *
-     * @return integer
+     * @return integer 
      */
     public function getId()
     {
@@ -57,7 +72,7 @@ class Goleador
     /**
      * Get nombre
      *
-     * @return string
+     * @return string 
      */
     public function getNombre()
     {
@@ -79,7 +94,7 @@ class Goleador
     /**
      * Get apellido
      *
-     * @return string
+     * @return string 
      */
     public function getApellido()
     {
@@ -87,25 +102,24 @@ class Goleador
     }
 
     /**
-     * Set id_equipo
+     * Set idEquipo
      *
-     * @param integer $idEquipo
+     * @param Enroporra\EnroporraBundle\Entity\Equipo $idEquipo
      * @return Goleador
      */
-    public function setIdEquipo($idEquipo)
+    public function setIdEquipo(\Enroporra\EnroporraBundle\Entity\Equipo $idEquipo = null)
     {
-        $this->id_equipo = $idEquipo;
+        $this->idEquipo = $idEquipo;
         return $this;
     }
 
     /**
-     * Get id_equipo
+     * Get idEquipo
      *
-     * @return integer
+     * @return Enroporra\EnroporraBundle\Entity\Equipo 
      */
     public function getIdEquipo()
     {
-        return $this->id_equipo;
+        return $this->idEquipo;
     }
-
 }

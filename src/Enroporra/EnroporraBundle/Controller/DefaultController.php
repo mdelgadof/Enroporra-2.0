@@ -12,6 +12,7 @@ class DefaultController extends Controller
     {
         // Esta línea va aquí porque no la puedo meter en el constructor. Dice que no puedo aplicar el método get y sospecho que es porque no ha terminado todavía de construir el objeto
         $this->base = $this->get("enroporra.base");
+        $this->base->init($this->getDoctrine());
 
         $repNoticia = $this->getDoctrine()->getRepository('EnroporraBundle:Noticia');
         $noticias = $repNoticia->findByActiva(1);

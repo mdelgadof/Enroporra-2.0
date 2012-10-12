@@ -1,0 +1,157 @@
+<?php
+
+namespace Enroporra\EnroporraBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Enroporra\EnroporraBundle\Entity\Competicion
+ *
+ * @ORM\Table(name="Competicion")
+ * @ORM\Entity
+ */
+class Competicion
+{
+    /**
+     * @var integer $id
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var string $nombre
+     *
+     * @ORM\Column(name="nombre", type="string", length=64, nullable=false)
+     */
+    private $nombre;
+
+    /**
+     * @var datetime $fechaComienzoPrimeraFase
+     *
+     * @ORM\Column(name="fecha_comienzo_primera_fase", type="datetime", nullable=false)
+     */
+    private $fechaComienzoPrimeraFase;
+
+    /**
+     * @var datetime $fechaFinPrimeraFase
+     *
+     * @ORM\Column(name="fecha_fin_primera_fase", type="datetime", nullable=false)
+     */
+    private $fechaFinPrimeraFase;
+
+    /**
+     * @var datetime $fechaComienzoSegundaFase
+     *
+     * @ORM\Column(name="fecha_comienzo_segunda_fase", type="datetime", nullable=false)
+     */
+    private $fechaComienzoSegundaFase;
+
+    /**
+     * @var boolean $finalizada
+     *
+     * @ORM\Column(name="finalizada", type="boolean", nullable=false)
+     */
+    private $finalizada;
+
+    /**
+     * @var decimal $puntosPorGol
+     *
+     * @ORM\Column(name="puntos_por_gol", type="decimal", nullable=false)
+     */
+    private $puntosPorGol;
+
+    /**
+     * @var decimal $puntosPorArbitro
+     *
+     * @ORM\Column(name="puntos_por_arbitro", type="decimal", nullable=false)
+     */
+    private $puntosPorArbitro;
+
+    /**
+     * @var decimal $puntosPorPichichi
+     *
+     * @ORM\Column(name="puntos_por_pichichi", type="decimal", nullable=false)
+     */
+    private $puntosPorPichichi;
+
+    /**
+     * @var string $linkBases
+     *
+     * @ORM\Column(name="link_bases", type="string", length=32, nullable=false)
+     */
+    private $linkBases;
+
+    /**
+     * @var string $linkPartidos
+     *
+     * @ORM\Column(name="link_partidos", type="string", length=32, nullable=false)
+     */
+    private $linkPartidos;
+
+    /**
+     * @var string $primeraRondaEliminatoria
+     *
+     * @ORM\Column(name="primera_ronda_eliminatoria", type="string", length=32, nullable=false)
+     */
+    private $primeraRondaEliminatoria;
+
+    /**
+     * @var string $proximaCompeticion
+     *
+     * @ORM\Column(name="proxima_competicion", type="string", length=32, nullable=false)
+     */
+    private $proximaCompeticion;
+
+    /**
+     * @var string $bancoNombre
+     *
+     * @ORM\Column(name="banco_nombre", type="string", length=16, nullable=false)
+     */
+    private $bancoNombre;
+
+    /**
+     * @var string $bancoCuenta
+     *
+     * @ORM\Column(name="banco_cuenta", type="string", length=32, nullable=false)
+     */
+    private $bancoCuenta;
+
+    /**
+     * @var string $bancoTitular
+     *
+     * @ORM\Column(name="banco_titular", type="string", length=64, nullable=false)
+     */
+    private $bancoTitular;
+
+    /**
+     * @var integer $numeroPartidosEliminatorias
+     *
+     * @ORM\Column(name="numero_partidos_eliminatorias", type="integer", nullable=false)
+     */
+    private $numeroPartidosEliminatorias;
+
+    /**
+     * @var Arbitro
+     *
+     * @ORM\ManyToOne(targetEntity="Arbitro")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_arbitro", referencedColumnName="id")
+     * })
+     */
+    private $idArbitro;
+
+    /**
+     * @var Partido
+     *
+     * @ORM\ManyToOne(targetEntity="Partido")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_partido_primera_ronda_eliminatoria", referencedColumnName="id")
+     * })
+     */
+    private $idPartidoPrimeraRondaEliminatoria;
+
+
+}

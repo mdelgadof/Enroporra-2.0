@@ -16,8 +16,9 @@ class cPorrista extends Porrista
     private $goleador;
     private $segunda_fase;
     private $em;
+    private $base;
 
-    function __construct($porrista, $em)
+    function __construct($porrista, $em, $base)
     {
         $this->setId($porrista->getId());
         $this->setNombre($porrista->getNombre());
@@ -32,7 +33,7 @@ class cPorrista extends Porrista
         $this->setEmail($porrista->getEmail());
         $this->setComisionero($porrista->getComisionero());
         $this->em = $em;
-        $this->calculaPuntos();
+        $this->base = $base;
     }
 
     /**
@@ -203,7 +204,32 @@ class cPorrista extends Porrista
 
     public function calculaPuntos()
     {
-        $puntos = rand(1, 100);
+        /* $query="SELECT
+          e1.nombre equiporeal1, e1.bandera banderareal1, e2.nombre equiporeal2, e2.bandera banderareal2,
+          e3.nombre equipoapuesta1, e3.bandera banderaapuesta1, e4.nombre equipoapuesta2, e4.bandera banderaapuesta2,
+          p.fecha, p.hora, p.fase, p.resultado1 r1, p.resultado2 r2, a.resultado1 r3, a.resultado2 r4,
+          p.id idPartido, p.quiniela q1, a.quiniela q2 FROM partido p LEFT JOIN apuesta a ON a.id_partido=p.id,equipo e1,equipo e2,equipo e3,equipo e4 WHERE p.id_equipo1=e1.id AND p.id_equipo2=e2.id AND a.id_equipo1=e3.id AND a.id_equipo2=e4.id AND a.id_porrista='".$id_porrista."' AND p.resultado1>=0 AND (p.id_equipo1='".$idEquipoGoleador."' OR p.id_equipo2='".$idEquipoGoleador."' OR a.quiniela=p.quiniela) ORDER BY p.fecha DESC, p.hora DESC";
+          $res=mysql_query($query,$conexion); */
+
+        //$puntos = rand(1, 100);
+        //$repGoles = $this->em->getRepository('EnroporraBundle:Gol');
+
+        $puntos = 0;
+
+        // Puntos por acertar árbitro de la final
+        if (($this->getIdArbitro() == $this->base->getCompetition()->getIdArbitro()) && $this->getIdArbitro())
+            $puntos+=$this->base->getCompetition()->getPuntosPorArbitro();
+
+        // Puntos por acertar Pichichi del campeonato
+        if ($this->base->getCompetition()->getFinalizada() && $this->getGoleador()->getEsPichichi()) {
+            $puntos += $this->base->getCompetition()->getPuntosPorPichichi();
+        }
+
+        // Puntos por cada gol del goleador elegido
+        $puntos += ($this->getGoleador()->getGoles() * $this->base->getCompetition()->getPuntosPorGol());
+
+
+
         $this->setPuntos($puntos);
     }
 
