@@ -8,6 +8,7 @@ class cGoleador extends Goleador
 {
 
     private $goles;
+    private $es_pichichi;
     private $bandera;
     private $nombre_equipo;
     private $em;
@@ -23,12 +24,21 @@ class cGoleador extends Goleador
         $repGoles = $this->em->getRepository('EnroporraBundle:Gol');
         $resGoles = $repGoles->createQueryBuilder('g')
             ->select('COUNT(g.id) as numero')
-            ->where('g.id_goleador = :id_goleador')
-            ->setParameter('id_goleador', $goleador->getId())
+            ->where('g.idGoleador = :idGoleador')
+            ->setParameter('idGoleador', $goleador->getId())
             ->getQuery()
             ->getResult();
 
         $this->setGoles($resGoles[0]["numero"]);
+
+        $resGoles = $repGoles->createQueryBuilder('g')
+            ->select('COUNT(g.idGoleador) as numero')
+            ->groupBy('g.idGoleador')
+            ->orderBy('numero','DESC')
+            ->getQuery()
+            ->getResult();
+
+        $this->setEsPichichi($this->getGoles()==$resGoles[0]["numero"]);
 
         $repEquipo = $this->em->getRepository('EnroporraBundle:Equipo');
         $equipo = $repEquipo->find($goleador->getIdEquipo());
@@ -120,21 +130,27 @@ class cGoleador extends Goleador
         return $this->nombre_equipo;
     }
 
-    public function calculaGoles()
+    /**
+     * Set es pichichi
+     *
+     * @param boolean $esPichichi
+     * @return cGoleador
+     */
+    public function setEsPichichi($esPichichi)
     {
-
-
-        /* $partidos = $repGoles->createQueryBuilder('g')
-          ->select($partidos->expr()->count())
-          ->where('p.fecha <= :fecha', 'p.resultado1 >= :resultado1')
-          ->setParameter('fecha', date("Y-m-d"))
-          ->setParameter('resultado1', 0)
-          ->getQuery()
-          ->getResult();
-
-          $query = "SELECT j.nombre nombrej,e.nombre nombree,e.bandera,count(g.id) goles FROM equipo e,jugador j LEFT JOIN goles g ON g.id_goleador=j.id WHERE j.id_equipo=e.id AND j.id='" . $porrista["id_goleador"] . "' GROUP BY j.id";
-
-          $this->setGoles($goles); */
+        $this->es_pichichi = $esPichichi;
+        return $this;
     }
+
+    /**
+     * Get es pichichi
+     *
+     * @return boolean
+     */
+    public function getEsPichichi()
+    {
+        return $this->es_pichichi;
+    }
+
 
 }

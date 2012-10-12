@@ -6,23 +6,38 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Enroporra\EnroporraBundle\Entity\Arbitro
+ *
+ * @ORM\Table(name="Arbitro")
+ * @ORM\Entity
  */
 class Arbitro
 {
     /**
      * @var integer $id
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
      * @var string $nombre
+     *
+     * @ORM\Column(name="nombre", type="string", length=64, nullable=false)
      */
     private $nombre;
 
     /**
-     * @var integer $id_competicion
+     * @var Competicion
+     *
+     * @ORM\ManyToOne(targetEntity="Competicion")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_competicion", referencedColumnName="id")
+     * })
      */
-    private $id_competicion;
+    private $idCompeticion;
+
 
 
     /**
@@ -58,24 +73,24 @@ class Arbitro
     }
 
     /**
-     * Set id_competicion
+     * Set idCompeticion
      *
-     * @param integer $idCompeticion
+     * @param Enroporra\EnroporraBundle\Entity\Competicion $idCompeticion
      * @return Arbitro
      */
-    public function setIdCompeticion($idCompeticion)
+    public function setIdCompeticion(\Enroporra\EnroporraBundle\Entity\Competicion $idCompeticion = null)
     {
-        $this->id_competicion = $idCompeticion;
+        $this->idCompeticion = $idCompeticion;
         return $this;
     }
 
     /**
-     * Get id_competicion
+     * Get idCompeticion
      *
-     * @return integer 
+     * @return Enroporra\EnroporraBundle\Entity\Competicion 
      */
     public function getIdCompeticion()
     {
-        return $this->id_competicion;
+        return $this->idCompeticion;
     }
 }

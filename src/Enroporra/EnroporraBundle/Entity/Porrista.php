@@ -6,73 +6,113 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Enroporra\EnroporraBundle\Entity\Porrista
+ *
+ * @ORM\Table(name="Porrista")
+ * @ORM\Entity
  */
 class Porrista
 {
     /**
      * @var integer $id
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
      * @var string $nombre
+     *
+     * @ORM\Column(name="nombre", type="string", length=64, nullable=false)
      */
     private $nombre;
 
     /**
      * @var string $apellido
+     *
+     * @ORM\Column(name="apellido", type="string", length=64, nullable=false)
      */
     private $apellido;
 
     /**
      * @var string $nick
+     *
+     * @ORM\Column(name="nick", type="string", length=64, nullable=false)
      */
     private $nick;
 
     /**
-     * @var integer $id_goleador
-     */
-    private $id_goleador;
-
-    /**
-     * @var integer $id_arbitro
-     */
-    private $id_arbitro;
-
-    /**
-     * @var integer $id_competicion
-     */
-    private $id_competicion;
-
-    /**
      * @var boolean $pagado
+     *
+     * @ORM\Column(name="pagado", type="boolean", nullable=false)
      */
     private $pagado;
 
     /**
-     * @var string $forma_pago
+     * @var string $formaPago
+     *
+     * @ORM\Column(name="forma_pago", type="string", length=32, nullable=false)
      */
-    private $forma_pago;
+    private $formaPago;
 
     /**
      * @var string $telefono
+     *
+     * @ORM\Column(name="telefono", type="string", length=32, nullable=false)
      */
     private $telefono;
 
     /**
      * @var string $email
+     *
+     * @ORM\Column(name="email", type="string", length=64, nullable=false)
      */
     private $email;
 
     /**
      * @var string $comisionero
+     *
+     * @ORM\Column(name="comisionero", type="string", length=16, nullable=false)
      */
     private $comisionero;
 
     /**
+     * @var Arbitro
+     *
+     * @ORM\ManyToOne(targetEntity="Arbitro")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_arbitro", referencedColumnName="id")
+     * })
+     */
+    private $idArbitro;
+
+    /**
+     * @var Goleador
+     *
+     * @ORM\ManyToOne(targetEntity="Goleador")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_goleador", referencedColumnName="id")
+     * })
+     */
+    private $idGoleador;
+
+    /**
+     * @var Competicion
+     *
+     * @ORM\ManyToOne(targetEntity="Competicion")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_competicion", referencedColumnName="id")
+     * })
+     */
+    private $idCompeticion;
+
+
+
+    /**
      * Get id
      *
-     * @return integer
+     * @return integer 
      */
     public function getId()
     {
@@ -94,7 +134,7 @@ class Porrista
     /**
      * Get nombre
      *
-     * @return string
+     * @return string 
      */
     public function getNombre()
     {
@@ -116,7 +156,7 @@ class Porrista
     /**
      * Get apellido
      *
-     * @return string
+     * @return string 
      */
     public function getApellido()
     {
@@ -138,77 +178,11 @@ class Porrista
     /**
      * Get nick
      *
-     * @return string
+     * @return string 
      */
     public function getNick()
     {
         return $this->nick;
-    }
-
-    /**
-     * Set id_goleador
-     *
-     * @param integer $idGoleador
-     * @return Porrista
-     */
-    public function setIdGoleador($idGoleador)
-    {
-        $this->id_goleador = $idGoleador;
-        return $this;
-    }
-
-    /**
-     * Get id_goleador
-     *
-     * @return integer
-     */
-    public function getIdGoleador()
-    {
-        return $this->id_goleador;
-    }
-
-    /**
-     * Set id_arbitro
-     *
-     * @param integer $idArbitro
-     * @return Porrista
-     */
-    public function setIdArbitro($idArbitro)
-    {
-        $this->id_arbitro = $idArbitro;
-        return $this;
-    }
-
-    /**
-     * Get id_arbitro
-     *
-     * @return integer
-     */
-    public function getIdArbitro()
-    {
-        return $this->id_arbitro;
-    }
-
-    /**
-     * Set id_competicion
-     *
-     * @param integer $idCompeticion
-     * @return Porrista
-     */
-    public function setIdCompeticion($idCompeticion)
-    {
-        $this->id_competicion = $idCompeticion;
-        return $this;
-    }
-
-    /**
-     * Get id_competicion
-     *
-     * @return integer
-     */
-    public function getIdCompeticion()
-    {
-        return $this->id_competicion;
     }
 
     /**
@@ -226,7 +200,7 @@ class Porrista
     /**
      * Get pagado
      *
-     * @return boolean
+     * @return boolean 
      */
     public function getPagado()
     {
@@ -234,25 +208,25 @@ class Porrista
     }
 
     /**
-     * Set forma_pago
+     * Set formaPago
      *
      * @param string $formaPago
      * @return Porrista
      */
     public function setFormaPago($formaPago)
     {
-        $this->forma_pago = $formaPago;
+        $this->formaPago = $formaPago;
         return $this;
     }
 
     /**
-     * Get forma_pago
+     * Get formaPago
      *
-     * @return string
+     * @return string 
      */
     public function getFormaPago()
     {
-        return $this->forma_pago;
+        return $this->formaPago;
     }
 
     /**
@@ -270,7 +244,7 @@ class Porrista
     /**
      * Get telefono
      *
-     * @return string
+     * @return string 
      */
     public function getTelefono()
     {
@@ -292,7 +266,7 @@ class Porrista
     /**
      * Get email
      *
-     * @return string
+     * @return string 
      */
     public function getEmail()
     {
@@ -314,10 +288,76 @@ class Porrista
     /**
      * Get comisionero
      *
-     * @return string
+     * @return string 
      */
     public function getComisionero()
     {
         return $this->comisionero;
+    }
+
+    /**
+     * Set idArbitro
+     *
+     * @param Enroporra\EnroporraBundle\Entity\Arbitro $idArbitro
+     * @return Porrista
+     */
+    public function setIdArbitro(\Enroporra\EnroporraBundle\Entity\Arbitro $idArbitro = null)
+    {
+        $this->idArbitro = $idArbitro;
+        return $this;
+    }
+
+    /**
+     * Get idArbitro
+     *
+     * @return Enroporra\EnroporraBundle\Entity\Arbitro 
+     */
+    public function getIdArbitro()
+    {
+        return $this->idArbitro;
+    }
+
+    /**
+     * Set idGoleador
+     *
+     * @param Enroporra\EnroporraBundle\Entity\Goleador $idGoleador
+     * @return Porrista
+     */
+    public function setIdGoleador(\Enroporra\EnroporraBundle\Entity\Goleador $idGoleador = null)
+    {
+        $this->idGoleador = $idGoleador;
+        return $this;
+    }
+
+    /**
+     * Get idGoleador
+     *
+     * @return Enroporra\EnroporraBundle\Entity\Goleador 
+     */
+    public function getIdGoleador()
+    {
+        return $this->idGoleador;
+    }
+
+    /**
+     * Set idCompeticion
+     *
+     * @param Enroporra\EnroporraBundle\Entity\Competicion $idCompeticion
+     * @return Porrista
+     */
+    public function setIdCompeticion(\Enroporra\EnroporraBundle\Entity\Competicion $idCompeticion = null)
+    {
+        $this->idCompeticion = $idCompeticion;
+        return $this;
+    }
+
+    /**
+     * Get idCompeticion
+     *
+     * @return Enroporra\EnroporraBundle\Entity\Competicion 
+     */
+    public function getIdCompeticion()
+    {
+        return $this->idCompeticion;
     }
 }

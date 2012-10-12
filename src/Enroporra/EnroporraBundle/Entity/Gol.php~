@@ -1,0 +1,45 @@
+<?php
+
+namespace Enroporra\EnroporraBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Enroporra\EnroporraBundle\Entity\Gol
+ *
+ * @ORM\Table(name="Gol")
+ * @ORM\Entity
+ */
+class Gol
+{
+    /**
+     * @var integer $id
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var Partido
+     *
+     * @ORM\ManyToOne(targetEntity="Partido")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_partido", referencedColumnName="id")
+     * })
+     */
+    private $idPartido;
+
+    /**
+     * @var Goleador
+     *
+     * @ORM\ManyToOne(targetEntity="Goleador")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_goleador", referencedColumnName="id")
+     * })
+     */
+    private $idGoleador;
+
+
+}

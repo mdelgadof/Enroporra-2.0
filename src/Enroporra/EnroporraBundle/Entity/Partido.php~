@@ -1,0 +1,97 @@
+<?php
+
+namespace Enroporra\EnroporraBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Enroporra\EnroporraBundle\Entity\Partido
+ *
+ * @ORM\Table(name="Partido")
+ * @ORM\Entity
+ */
+class Partido
+{
+    /**
+     * @var integer $id
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var date $fecha
+     *
+     * @ORM\Column(name="fecha", type="date", nullable=false)
+     */
+    private $fecha;
+
+    /**
+     * @var time $hora
+     *
+     * @ORM\Column(name="hora", type="time", nullable=false)
+     */
+    private $hora;
+
+    /**
+     * @var integer $fase
+     *
+     * @ORM\Column(name="fase", type="integer", nullable=false)
+     */
+    private $fase;
+
+    /**
+     * @var integer $resultado1
+     *
+     * @ORM\Column(name="resultado1", type="integer", nullable=false)
+     */
+    private $resultado1;
+
+    /**
+     * @var integer $resultado2
+     *
+     * @ORM\Column(name="resultado2", type="integer", nullable=false)
+     */
+    private $resultado2;
+
+    /**
+     * @var integer $quiniela
+     *
+     * @ORM\Column(name="quiniela", type="integer", nullable=false)
+     */
+    private $quiniela;
+
+    /**
+     * @var Equipo
+     *
+     * @ORM\ManyToOne(targetEntity="Equipo")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_equipo2", referencedColumnName="id")
+     * })
+     */
+    private $idEquipo2;
+
+    /**
+     * @var Competicion
+     *
+     * @ORM\ManyToOne(targetEntity="Competicion")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_competicion", referencedColumnName="id")
+     * })
+     */
+    private $idCompeticion;
+
+    /**
+     * @var Equipo
+     *
+     * @ORM\ManyToOne(targetEntity="Equipo")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_equipo1", referencedColumnName="id")
+     * })
+     */
+    private $idEquipo1;
+
+
+}
