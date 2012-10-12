@@ -124,10 +124,10 @@ class ClasificacionController extends Controller
                 else
                     $nombresExistentes[] = $porrista->getNombre();
 
-                if (!isset($goleadoresActuales[$porrista->getIdGoleador()])) {
-                    $goleadoresActuales[$porrista->getIdGoleador()] = new cGoleador($repGoleador->find($porrista->getIdGoleador()), $this->getDoctrine());
+                if (!isset($goleadoresActuales[$porrista->getIdGoleador()->getId()])) {
+                    $goleadoresActuales[$porrista->getIdGoleador()->getId()] = new cGoleador($porrista->getIdGoleador(), $this->getDoctrine());
                 }
-                $porristas[$clave]->setGoleador($goleadoresActuales[$porrista->getIdGoleador()]);
+                $porristas[$clave]->setGoleador($goleadoresActuales[$porrista->getIdGoleador()->getId()]);
                 $porristas[$clave]->calculaPuntos();
 
                 if ($tipo == "amigos") {

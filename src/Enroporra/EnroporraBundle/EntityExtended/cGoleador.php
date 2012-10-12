@@ -40,8 +40,7 @@ class cGoleador extends Goleador
 
         $this->setEsPichichi($this->getGoles()==$resGoles[0]["numero"]);
 
-        $repEquipo = $this->em->getRepository('EnroporraBundle:Equipo');
-        $equipo = $repEquipo->find($goleador->getIdEquipo());
+        $equipo = $goleador->getIdEquipo();
 
         $this->setBandera($equipo->getBandera());
         $this->setNombreEquipo($equipo->getNombre());
