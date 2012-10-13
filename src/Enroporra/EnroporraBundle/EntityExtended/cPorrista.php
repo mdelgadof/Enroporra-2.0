@@ -204,15 +204,8 @@ class cPorrista extends Porrista
 
     public function calculaPuntos()
     {
-        /* $query="SELECT
-          e1.nombre equiporeal1, e1.bandera banderareal1, e2.nombre equiporeal2, e2.bandera banderareal2,
-          e3.nombre equipoapuesta1, e3.bandera banderaapuesta1, e4.nombre equipoapuesta2, e4.bandera banderaapuesta2,
-          p.fecha, p.hora, p.fase, p.resultado1 r1, p.resultado2 r2, a.resultado1 r3, a.resultado2 r4,
-          p.id idPartido, p.quiniela q1, a.quiniela q2 FROM partido p LEFT JOIN apuesta a ON a.id_partido=p.id,equipo e1,equipo e2,equipo e3,equipo e4 WHERE p.id_equipo1=e1.id AND p.id_equipo2=e2.id AND a.id_equipo1=e3.id AND a.id_equipo2=e4.id AND a.id_porrista='".$id_porrista."' AND p.resultado1>=0 AND (p.id_equipo1='".$idEquipoGoleador."' OR p.id_equipo2='".$idEquipoGoleador."' OR a.quiniela=p.quiniela) ORDER BY p.fecha DESC, p.hora DESC";
-          $res=mysql_query($query,$conexion); */
 
         //$puntos = rand(1, 100);
-        //$repGoles = $this->em->getRepository('EnroporraBundle:Gol');
 
         $puntos = 0;
 
@@ -228,6 +221,19 @@ class cPorrista extends Porrista
         // Puntos por cada gol del goleador elegido
         $puntos += ($this->getGoleador()->getGoles() * $this->base->getCompetition()->getPuntosPorGol());
 
+        // Puntos por cada quiniela y resultados acertados, siempre que el equipo ganador coincida con el de la apuesta
+//        $repApuestas = $this->em->getRepository('EnroporraBundle:Apuesta');
+//        $resApuestas = $repApuestas->createQueryBuilder('a')
+//            ->select('a.id_partido', 'a.resultado1 ra1', 'a.resultado2 ra2', 'a.id_equipo1 ea1', 'a.id_equipo2 ea2', 'a.quiniela qa', 'p.resultado1 rp1', 'p.resultado2 rp2', 'p.id_equipo1 ep1', 'p.id_equipo2 ep2', 'p.quiniela qp', 'f.puntos_quiniela', 'f.puntos_resultado')
+//            ->leftJoin('a.id_partido', 'p')
+//            ->leftJoin('p.id_competicion', 'f.id_competicion')
+//            ->where('a.id_porrista = :idPorrista')
+//            ->where('p.fase = f.numero_fase')
+//            ->setParameter('idPorrista', $this->getId())
+//            ->getQuery()
+//            ->getResult();
+//
+//        $this->setGoles($resGoles[0]["numero"]);
 
 
         $this->setPuntos($puntos);
