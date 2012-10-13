@@ -36,13 +36,6 @@ class Partido
     private $hora;
 
     /**
-     * @var integer $fase
-     *
-     * @ORM\Column(name="fase", type="integer", nullable=false)
-     */
-    private $fase;
-
-    /**
      * @var integer $resultado1
      *
      * @ORM\Column(name="resultado1", type="integer", nullable=false)
@@ -64,14 +57,14 @@ class Partido
     private $quiniela;
 
     /**
-     * @var Equipo
+     * @var Fase
      *
-     * @ORM\ManyToOne(targetEntity="Equipo")
+     * @ORM\ManyToOne(targetEntity="Fase")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_equipo2", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="id_fase", referencedColumnName="id")
      * })
      */
-    private $idEquipo2;
+    private $idFase;
 
     /**
      * @var Competicion
@@ -92,6 +85,16 @@ class Partido
      * })
      */
     private $idEquipo1;
+
+    /**
+     * @var Equipo
+     *
+     * @ORM\ManyToOne(targetEntity="Equipo")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_equipo2", referencedColumnName="id")
+     * })
+     */
+    private $idEquipo2;
 
 
 
@@ -147,28 +150,6 @@ class Partido
     public function getHora()
     {
         return $this->hora;
-    }
-
-    /**
-     * Set fase
-     *
-     * @param integer $fase
-     * @return Partido
-     */
-    public function setFase($fase)
-    {
-        $this->fase = $fase;
-        return $this;
-    }
-
-    /**
-     * Get fase
-     *
-     * @return integer 
-     */
-    public function getFase()
-    {
-        return $this->fase;
     }
 
     /**
@@ -238,25 +219,25 @@ class Partido
     }
 
     /**
-     * Set idEquipo2
+     * Set idFase
      *
-     * @param Enroporra\EnroporraBundle\Entity\Equipo $idEquipo2
+     * @param Enroporra\EnroporraBundle\Entity\Fase $idFase
      * @return Partido
      */
-    public function setIdEquipo2(\Enroporra\EnroporraBundle\Entity\Equipo $idEquipo2 = null)
+    public function setIdFase(\Enroporra\EnroporraBundle\Entity\Fase $idFase = null)
     {
-        $this->idEquipo2 = $idEquipo2;
+        $this->idFase = $idFase;
         return $this;
     }
 
     /**
-     * Get idEquipo2
+     * Get idFase
      *
-     * @return Enroporra\EnroporraBundle\Entity\Equipo 
+     * @return Enroporra\EnroporraBundle\Entity\Fase 
      */
-    public function getIdEquipo2()
+    public function getIdFase()
     {
-        return $this->idEquipo2;
+        return $this->idFase;
     }
 
     /**
@@ -301,5 +282,27 @@ class Partido
     public function getIdEquipo1()
     {
         return $this->idEquipo1;
+    }
+
+    /**
+     * Set idEquipo2
+     *
+     * @param Enroporra\EnroporraBundle\Entity\Equipo $idEquipo2
+     * @return Partido
+     */
+    public function setIdEquipo2(\Enroporra\EnroporraBundle\Entity\Equipo $idEquipo2 = null)
+    {
+        $this->idEquipo2 = $idEquipo2;
+        return $this;
+    }
+
+    /**
+     * Get idEquipo2
+     *
+     * @return Enroporra\EnroporraBundle\Entity\Equipo 
+     */
+    public function getIdEquipo2()
+    {
+        return $this->idEquipo2;
     }
 }

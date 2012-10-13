@@ -17,10 +17,11 @@ class cPorrista extends Porrista
     private $segunda_fase;
     private $em;
     private $base;
+    private $idp;
 
     function __construct($porrista, $em, $base)
     {
-        $this->setId($porrista->getId());
+        $this->setIdp($porrista->getId());
         $this->setNombre($porrista->getNombre());
         $this->setApellido($porrista->getApellido());
         $this->setNick($porrista->getNick());
@@ -42,10 +43,20 @@ class cPorrista extends Porrista
      * @param integer $id
      * @return cPorrista
      */
-    private function setId($id)
+    private function setIdp($id)
     {
-        $this->id = $id;
+        $this->idp = $id;
         return $this;
+    }
+
+    /**
+     * Get idp
+     *
+     * @return integer
+     */
+    public function getIdp()
+    {
+        return $this->idp;
     }
 
     /**
@@ -204,15 +215,6 @@ class cPorrista extends Porrista
 
     public function calculaPuntos()
     {
-        /* $query="SELECT
-          e1.nombre equiporeal1, e1.bandera banderareal1, e2.nombre equiporeal2, e2.bandera banderareal2,
-          e3.nombre equipoapuesta1, e3.bandera banderaapuesta1, e4.nombre equipoapuesta2, e4.bandera banderaapuesta2,
-          p.fecha, p.hora, p.fase, p.resultado1 r1, p.resultado2 r2, a.resultado1 r3, a.resultado2 r4,
-          p.id idPartido, p.quiniela q1, a.quiniela q2 FROM partido p LEFT JOIN apuesta a ON a.id_partido=p.id,equipo e1,equipo e2,equipo e3,equipo e4 WHERE p.id_equipo1=e1.id AND p.id_equipo2=e2.id AND a.id_equipo1=e3.id AND a.id_equipo2=e4.id AND a.id_porrista='".$id_porrista."' AND p.resultado1>=0 AND (p.id_equipo1='".$idEquipoGoleador."' OR p.id_equipo2='".$idEquipoGoleador."' OR a.quiniela=p.quiniela) ORDER BY p.fecha DESC, p.hora DESC";
-          $res=mysql_query($query,$conexion); */
-
-        //$puntos = rand(1, 100);
-        //$repGoles = $this->em->getRepository('EnroporraBundle:Gol');
 
         $puntos = 0;
 
@@ -228,7 +230,37 @@ class cPorrista extends Porrista
         // Puntos por cada gol del goleador elegido
         $puntos += ($this->getGoleador()->getGoles() * $this->base->getCompetition()->getPuntosPorGol());
 
+        // Puntos por cada quiniela y resultados acertados, siempre que el equipo ganador coincida con el de la apuesta
 
+        // Creamos la query de Apuesta
+        $repApuestas = $this->em->getRepository('EnroporraBundle:Apuesta');
+        $resApuestas = $repApuestas->createQueryBuilder('a')
+            ->where('a.idPorrista = :idPorrista')
+            ->setParameter('idPorrista', $this->getIdp())
+            ->getQuery()
+            ->getResult();
+
+        // En cada partido-apuesta del porrista...
+        foreach ($resApuestas as $apuesta) {
+            // Verificamos que el partido se ha disputado (de lo contrario tiene en el resultado un empate a -1)
+            if ($apuesta->getIdPartido()->getResultado1()<0) continue;
+            // Verificamos que el ganador (o empate) del partido coincide con la apuesta del porrista
+            if ($apuesta->getQuiniela() == $apuesta->getIdPartido()->getQuiniela()) {
+                // Necesitamos comprobar que el equipo ganador del partido es el mismo equipo por el que apostó el porrista
+                // En el caso de empate final sabemos que es un partido de la fase de grupos (en las eliminatorias no hay empate), y en esos los equipos del porrista son siempre los mismos que los reales
+                if ($apuesta->getQuiniela() == 0 ||
+                    ($apuesta->getQuiniela() == 1 && $apuesta->getIdEquipo1()->getId() == $apuesta->getIdPartido()->getIdEquipo1()->getId()) ||
+                    ($apuesta->getQuiniela() == 2 && $apuesta->getIdEquipo2()->getId() == $apuesta->getIdPartido()->getIdEquipo2()->getId())
+                ) {
+                    $puntos += $apuesta->getIdPartido()->getIdFase()->getPuntosQuiniela();
+
+                    // Solo si ha acertado el ganador (o empate) es posible que también haya acertado el resultado, aquí lo verificamos
+                    if ($apuesta->getResultado1()==$apuesta->getIdPartido()->getResultado1() && $apuesta->getResultado2()==$apuesta->getIdPartido()->getResultado2()) {
+                        $puntos += $apuesta->getIdPartido()->getIdFase()->getPuntosResultado();
+                    }
+                }
+            }
+        }
 
         $this->setPuntos($puntos);
     }

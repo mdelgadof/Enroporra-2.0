@@ -43,16 +43,6 @@ class Apuesta
     private $quiniela;
 
     /**
-     * @var Porrista
-     *
-     * @ORM\ManyToOne(targetEntity="Porrista")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_porrista", referencedColumnName="id")
-     * })
-     */
-    private $idPorrista;
-
-    /**
      * @var Partido
      *
      * @ORM\ManyToOne(targetEntity="Partido")
@@ -61,16 +51,6 @@ class Apuesta
      * })
      */
     private $idPartido;
-
-    /**
-     * @var Competicion
-     *
-     * @ORM\ManyToOne(targetEntity="Competicion")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_competicion", referencedColumnName="id")
-     * })
-     */
-    private $idCompeticion;
 
     /**
      * @var Equipo
@@ -91,6 +71,16 @@ class Apuesta
      * })
      */
     private $idEquipo2;
+
+    /**
+     * @var Porrista
+     *
+     * @ORM\ManyToOne(targetEntity="Porrista")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_porrista", referencedColumnName="id")
+     * })
+     */
+    private $idPorrista;
 
 
 
@@ -171,28 +161,6 @@ class Apuesta
     }
 
     /**
-     * Set idPorrista
-     *
-     * @param Enroporra\EnroporraBundle\Entity\Porrista $idPorrista
-     * @return Apuesta
-     */
-    public function setIdPorrista(\Enroporra\EnroporraBundle\Entity\Porrista $idPorrista = null)
-    {
-        $this->idPorrista = $idPorrista;
-        return $this;
-    }
-
-    /**
-     * Get idPorrista
-     *
-     * @return Enroporra\EnroporraBundle\Entity\Porrista 
-     */
-    public function getIdPorrista()
-    {
-        return $this->idPorrista;
-    }
-
-    /**
      * Set idPartido
      *
      * @param Enroporra\EnroporraBundle\Entity\Partido $idPartido
@@ -212,28 +180,6 @@ class Apuesta
     public function getIdPartido()
     {
         return $this->idPartido;
-    }
-
-    /**
-     * Set idCompeticion
-     *
-     * @param Enroporra\EnroporraBundle\Entity\Competicion $idCompeticion
-     * @return Apuesta
-     */
-    public function setIdCompeticion(\Enroporra\EnroporraBundle\Entity\Competicion $idCompeticion = null)
-    {
-        $this->idCompeticion = $idCompeticion;
-        return $this;
-    }
-
-    /**
-     * Get idCompeticion
-     *
-     * @return Enroporra\EnroporraBundle\Entity\Competicion 
-     */
-    public function getIdCompeticion()
-    {
-        return $this->idCompeticion;
     }
 
     /**
@@ -278,5 +224,27 @@ class Apuesta
     public function getIdEquipo2()
     {
         return $this->idEquipo2;
+    }
+
+    /**
+     * Set idPorrista
+     *
+     * @param Enroporra\EnroporraBundle\Entity\Porrista $idPorrista
+     * @return Apuesta
+     */
+    public function setIdPorrista(\Enroporra\EnroporraBundle\Entity\Porrista $idPorrista = null)
+    {
+        $this->idPorrista = $idPorrista;
+        return $this;
+    }
+
+    /**
+     * Get idPorrista
+     *
+     * @return Enroporra\EnroporraBundle\Entity\Porrista 
+     */
+    public function getIdPorrista()
+    {
+        return $this->idPorrista;
     }
 }
