@@ -4,3 +4,6 @@ EnroporraBundle_homepage:
 
     pattern:  /clasificacion
     defaults: { _controller: EnroporraBundle:Clasificacion:index }
+
+    pattern:  /amigos
+    defaults: { _controller: EnroporraBundle:Clasificacion:amigos }

@@ -50,8 +50,9 @@ class ClasificacionController extends Controller
         $this->amigos = array();
         $cookieAmigos = $this->base->getCookieAmigos();
 
-        if (!strlen($cookieAmigos))
+        if (!strlen($cookieAmigos)) {
             return;
+        }
 
         $temp = explode(",", $cookieAmigos);
         if (!count($temp))

@@ -10,6 +10,9 @@ _clasificacion:
     pattern:  /clasificacion
     defaults: { _controller: EnroporraBundle:Clasificacion:index }
 
+_amigos:
+    pattern:  /amigos
+    defaults: { _controller: EnroporraBundle:Clasificacion:amigos }
 
 # Internal routing configuration to handle ESI
 #_internal:
