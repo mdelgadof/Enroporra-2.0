@@ -113,7 +113,7 @@ class ClasificacionController extends Controller
                 ->getResult();
 
             // Generamos un array de cPorrista que tiene métodos y variables extendidas a Porrista. Así no tocamos la Entity
-            $porristas = array();
+            $porristas = $porristasAmigos = array();
             foreach ($porristasBD as $porrista) {
                 $porristas[] = new cPorrista($porrista, $this->getDoctrine(), $this->base);
             }
@@ -133,10 +133,13 @@ class ClasificacionController extends Controller
                 $porristas[$clave]->calculaPuntos();
 
                 if ($tipo == "amigos") {
-                    if (!in_array(strtolower($porrista->getNick()), $this->amigos))
-                        array_splice($porristas, $clave, 1);
+                    if (in_array(strtolower($porrista->getNick()), $this->amigos))
+                        $porristasAmigos[]=$porrista;
                 }
             }
+
+            if ($tipo=="amigos")
+                $porristas = $porristasAmigos;
 
             usort($porristas, array($this, "cmp"));
 
