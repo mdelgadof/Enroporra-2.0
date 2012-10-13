@@ -216,8 +216,6 @@ class cPorrista extends Porrista
     public function calculaPuntos()
     {
 
-        //$puntos = rand(1, 100);
-
         $puntos = 0;
 
         // Puntos por acertar árbitro de la final
@@ -233,23 +231,36 @@ class cPorrista extends Porrista
         $puntos += ($this->getGoleador()->getGoles() * $this->base->getCompetition()->getPuntosPorGol());
 
         // Puntos por cada quiniela y resultados acertados, siempre que el equipo ganador coincida con el de la apuesta
+
+        // Creamos la query de Apuesta
         $repApuestas = $this->em->getRepository('EnroporraBundle:Apuesta');
         $resApuestas = $repApuestas->createQueryBuilder('a')
-            ->select('a.resultado1 ra1', 'a.resultado2 ra2', 'a.quiniela qa', 'p.resultado1 rp1', 'p.resultado2 rp2', 'p.quiniela qp', 'f.puntosQuiniela', 'f.puntosResultado')
-            ->leftJoin('a.idPartido', 'p')
-            ->leftJoin('p.idFase', 'f')
             ->where('a.idPorrista = :idPorrista')
             ->setParameter('idPorrista', $this->getIdp())
             ->getQuery()
             ->getResult();
 
-//                 ob_start();
-//          var_dump($resApuestas); echo "-".$this->getIdp()."-";
-//          $this->setNombre($this->getNombre()." ".ob_get_contents());
-//          ob_end_clean();
+        // En cada partido-apuesta del porrista...
+        foreach ($resApuestas as $apuesta) {
+            // Verificamos que el partido se ha disputado (de lo contrario tiene en el resultado un empate a -1)
+            if ($apuesta->getIdPartido()->getResultado1()<0) continue;
+            // Verificamos que el ganador (o empate) del partido coincide con la apuesta del porrista
+            if ($apuesta->getQuiniela() == $apuesta->getIdPartido()->getQuiniela()) {
+                // Necesitamos comprobar que el equipo ganador del partido es el mismo equipo por el que apostó el porrista
+                // En el caso de empate final sabemos que es un partido de la fase de grupos (en las eliminatorias no hay empate), y en esos los equipos del porrista son siempre los mismos que los reales
+                if ($apuesta->getQuiniela() == 0 ||
+                    ($apuesta->getQuiniela() == 1 && $apuesta->getIdEquipo1()->getId() == $apuesta->getIdPartido()->getIdEquipo1()->getId()) ||
+                    ($apuesta->getQuiniela() == 2 && $apuesta->getIdEquipo2()->getId() == $apuesta->getIdPartido()->getIdEquipo2()->getId())
+                ) {
+                    $puntos += $apuesta->getIdPartido()->getIdFase()->getPuntosQuiniela();
 
-        //$this->setGoles($resGoles[0]["numero"]);
-
+                    // Solo si ha acertado el ganador (o empate) es posible que también haya acertado el resultado, aquí lo verificamos
+                    if ($apuesta->getResultado1()==$apuesta->getIdPartido()->getResultado1() && $apuesta->getResultado2()==$apuesta->getIdPartido()->getResultado2()) {
+                        $puntos += $apuesta->getIdPartido()->getIdFase()->getPuntosResultado();
+                    }
+                }
+            }
+        }
 
         $this->setPuntos($puntos);
     }

@@ -17,7 +17,7 @@ Clasificación <span class='red'>{{ clasificacion.tipo }}</span> a día de hoy (
 {% if porrista.getDestacado %}
                 <h2>&nbsp;<span class='red'><b>{{ porrista.getClasificacion }}</b></span></h2></td><td nowrap><h2>&nbsp;{{ porrista.getNombre }} [<span class='red'><b>{{ porrista.getPuntos }}</b></span>]&nbsp;</h2>
 {% else %}
-                &nbsp;<span class='red'><b>{{ porrista.getClasificacion }}</b></span></td><td nowrap>&nbsp;{{ porrista.getNombre }} [<span class='red'><b>{{ porrista.getPuntos }}</b></span>]&nbsp;
+                &nbsp;<span class='red'><b>{{ porrista.getClasificacion }}</b></span></td><td nowrap>&nbsp;{{ porrista.getNombre|raw }} [<span class='red'><b>{{ porrista.getPuntos }}</b></span>]&nbsp;
 {% endif %}
 {% if porrista.segundaFase == 'OK' %}
                 <span class='green'>2ª Fase OK</span>
