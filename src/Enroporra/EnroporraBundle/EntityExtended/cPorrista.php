@@ -17,10 +17,11 @@ class cPorrista extends Porrista
     private $segunda_fase;
     private $em;
     private $base;
+    private $idp;
 
     function __construct($porrista, $em, $base)
     {
-        $this->setId($porrista->getId());
+        $this->setIdp($porrista->getId());
         $this->setNombre($porrista->getNombre());
         $this->setApellido($porrista->getApellido());
         $this->setNick($porrista->getNick());
@@ -42,10 +43,20 @@ class cPorrista extends Porrista
      * @param integer $id
      * @return cPorrista
      */
-    private function setId($id)
+    private function setIdp($id)
     {
-        $this->id = $id;
+        $this->idp = $id;
         return $this;
+    }
+
+    /**
+     * Get idp
+     *
+     * @return integer
+     */
+    public function getIdp()
+    {
+        return $this->idp;
     }
 
     /**
@@ -222,18 +233,22 @@ class cPorrista extends Porrista
         $puntos += ($this->getGoleador()->getGoles() * $this->base->getCompetition()->getPuntosPorGol());
 
         // Puntos por cada quiniela y resultados acertados, siempre que el equipo ganador coincida con el de la apuesta
-//        $repApuestas = $this->em->getRepository('EnroporraBundle:Apuesta');
-//        $resApuestas = $repApuestas->createQueryBuilder('a')
-//            ->select('a.id_partido', 'a.resultado1 ra1', 'a.resultado2 ra2', 'a.id_equipo1 ea1', 'a.id_equipo2 ea2', 'a.quiniela qa', 'p.resultado1 rp1', 'p.resultado2 rp2', 'p.id_equipo1 ep1', 'p.id_equipo2 ep2', 'p.quiniela qp', 'f.puntos_quiniela', 'f.puntos_resultado')
-//            ->leftJoin('a.id_partido', 'p')
-//            ->leftJoin('p.id_competicion', 'f.id_competicion')
-//            ->where('a.id_porrista = :idPorrista')
-//            ->where('p.fase = f.numero_fase')
-//            ->setParameter('idPorrista', $this->getId())
-//            ->getQuery()
-//            ->getResult();
-//
-//        $this->setGoles($resGoles[0]["numero"]);
+        $repApuestas = $this->em->getRepository('EnroporraBundle:Apuesta');
+        $resApuestas = $repApuestas->createQueryBuilder('a')
+            ->select('a.resultado1 ra1', 'a.resultado2 ra2', 'a.quiniela qa', 'p.resultado1 rp1', 'p.resultado2 rp2', 'p.quiniela qp', 'f.puntosQuiniela', 'f.puntosResultado')
+            ->leftJoin('a.idPartido', 'p')
+            ->leftJoin('p.idFase', 'f')
+            ->where('a.idPorrista = :idPorrista')
+            ->setParameter('idPorrista', $this->getIdp())
+            ->getQuery()
+            ->getResult();
+
+                 ob_start();
+          /*var_dump($resApuestas);*/ echo "-".$this->getIdp()."-";
+          $this->setNombre($this->getNombre()." ".ob_get_contents());
+          ob_end_clean();
+
+        //$this->setGoles($resGoles[0]["numero"]);
 
 
         $this->setPuntos($puntos);
