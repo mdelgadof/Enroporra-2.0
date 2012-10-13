@@ -243,10 +243,10 @@ class cPorrista extends Porrista
             ->getQuery()
             ->getResult();
 
-                 ob_start();
-          /*var_dump($resApuestas);*/ echo "-".$this->getIdp()."-";
-          $this->setNombre($this->getNombre()." ".ob_get_contents());
-          ob_end_clean();
+//                 ob_start();
+//          var_dump($resApuestas); echo "-".$this->getIdp()."-";
+//          $this->setNombre($this->getNombre()." ".ob_get_contents());
+//          ob_end_clean();
 
         //$this->setGoles($resGoles[0]["numero"]);
 
