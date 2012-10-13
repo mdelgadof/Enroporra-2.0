@@ -22,13 +22,6 @@ class Fase
     private $id;
 
     /**
-     * @var smallint $numeroFase
-     *
-     * @ORM\Column(name="numero_fase", type="smallint", nullable=false)
-     */
-    private $numeroFase;
-
-    /**
      * @var decimal $puntosQuiniela
      *
      * @ORM\Column(name="puntos_quiniela", type="decimal", nullable=false)
@@ -69,28 +62,6 @@ class Fase
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set numeroFase
-     *
-     * @param smallint $numeroFase
-     * @return Fase
-     */
-    public function setNumeroFase($numeroFase)
-    {
-        $this->numeroFase = $numeroFase;
-        return $this;
-    }
-
-    /**
-     * Get numeroFase
-     *
-     * @return smallint 
-     */
-    public function getNumeroFase()
-    {
-        return $this->numeroFase;
     }
 
     /**
