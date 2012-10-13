@@ -120,6 +120,11 @@ class ClasificacionController extends Controller
 
             foreach ($porristas as $clave => $porrista) {
 
+                if ($tipo == "amigos" && !in_array(strtolower($porrista->getNick()), $this->amigos))
+                    continue;
+                else if ($tipo == "amigos")
+                    $porristasAmigos[] = $porrista;
+
                 $porristas[$clave]->setNombre($this->get("enroporra.apellidos_con_tilde")->convertir($porrista->getNombre() . " " . $porrista->getApellido()));
                 if (in_array($porrista->getNombre(), $nombresExistentes))
                     $porristas[$clave]->setNombre($porrista->getNombre() . " (2)");
@@ -131,14 +136,9 @@ class ClasificacionController extends Controller
                 }
                 $porristas[$clave]->setGoleador($goleadoresActuales[$porrista->getIdGoleador()->getId()]);
                 $porristas[$clave]->calculaPuntos();
-
-                if ($tipo == "amigos") {
-                    if (in_array(strtolower($porrista->getNick()), $this->amigos))
-                        $porristasAmigos[]=$porrista;
-                }
             }
 
-            if ($tipo=="amigos")
+            if ($tipo == "amigos")
                 $porristas = $porristasAmigos;
 
             usort($porristas, array($this, "cmp"));
