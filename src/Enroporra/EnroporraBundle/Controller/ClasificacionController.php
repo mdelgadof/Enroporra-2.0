@@ -106,6 +106,7 @@ class ClasificacionController extends Controller
                 ->setMaxResults($this->PROXIMOS_PARTIDOS)
                 ->getQuery()
                 ->getResult();
+            $proximosPartidos=array();
             foreach ($resProximosPartidos as $proximoPartido) {
                 $proximosPartidos[]=$proximoPartido["id"];
             }
