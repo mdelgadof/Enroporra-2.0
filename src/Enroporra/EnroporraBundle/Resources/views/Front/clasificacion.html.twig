@@ -48,20 +48,32 @@ Clasificación <span class='red'>{{ clasificacion.tipo }}</span> a día de hoy (
                 </td>
             </tr>
             <tr><td colspan='5'>
-                    <div id='detalle_{{ porrista.getNick|upper }}' style='display:none'><p></p></div>
+                    <div id='detalle_{{ porrista.getNick|upper }}' style='display:none'></div>
                 </td>
             </tr>
 {% endfor %}
         </table>
         <br><br>
 {% else %}
-        <p>Todavía no ha comenzado {{ base.competition.name }} en Enroporra :)</p>
+        <p>Todavía no ha comenzado {{ base.competition.getNombre }} en Enroporra :)</p>
 {% endif %}
 
         <script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js'></script>
         <script type='text/javascript'>
         function verDetalle(nombre) {
                 $("#detalle_"+nombre).show();
+                if ($("#detalle_"+nombre).html()=="") {
+                    $.ajax({
+                        url:   '/detalle/{{ base.competition.getId }}/'+nombre,
+                        type:  'post',
+                        beforeSend: function () {
+                            $("#detalle_"+nombre).html("<p>Procesando, espere por favor...</p>");
+                        },
+                        success:  function (response) {
+                            $("#detalle_"+nombre).html(response);
+                        }
+                    });
+                }
                 $("#enlace_"+nombre).html("<a href='javascript:ocultarDetalle(\""+nombre+"\")'><img src='{{ asset('bundles/enroporra/images/bombillaoff.jpg') }}' alt='Ver los puntos que lleva "+nombre+"' width=32 height=32></a>");
         }
         function ocultarDetalle(nombre) {

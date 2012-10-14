@@ -50,10 +50,12 @@ class ClasificacionController extends Controller
         $this->base = $this->get("enroporra.base");
         $this->base->init($this->getDoctrine());
 
-        $arbitro = $pichichi = $goles = $apuestas = "";
+        $arbitro = $pichichi = $goles = "";
+        $apuestas = array();
 
         $repPorristas = $this->getDoctrine()->getRepository('EnroporraBundle:Porrista');
         $repApuestas = $this->getDoctrine()->getRepository('EnroporraBundle:Apuesta');
+        $repGoles = $this->getDoctrine()->getRepository('EnroporraBundle:Gol');
 
         $resPorrista = $repPorristas->createQueryBuilder('p')
             ->where('p.pagado = :pagado AND p.nick = :nick AND p.idCompeticion = :idCompeticion')
@@ -76,12 +78,35 @@ class ClasificacionController extends Controller
         if ($porrista->getIdCompeticion()->getFinalizada() && $cGoleador->getEsPichichi())
             $pichichi = $porrista->getIdGoleador();
 
-
         // Puntos por cada gol del goleador elegido
-        /*$puntos += ($this->getGoleador()->getGoles() * $this->base->getCompetition()->getPuntosPorGol());
-        */
+        $goles = $repGoles->createQueryBuilder('g')
+            ->where('g.idGoleador = :idGoleador')
+            ->setParameter('idGoleador', $porrista->getIdGoleador())
+            ->getQuery()
+            ->getResult();
 
-        return $this->render('EnroporraBundle:Front:clasificacion_detalle.html.twig', array('arbitro' => $arbitro, 'pichichi' => $pichichi, 'porrista' => $porrista));
+        // Puntos por cada partido acertado
+        $resApuestas = $repApuestas->createQueryBuilder('a')
+            ->where('a.idPorrista = :idPorrista')
+            ->setParameter('idPorrista', $porrista)
+            ->getQuery()
+            ->getResult();
+        foreach ($resApuestas as $apuesta) {
+            // Verificamos que el partido se ha disputado (de lo contrario tiene en el resultado un empate a -1)
+            if ($apuesta->getIdPartido()->getResultado1() < 0)
+                continue;
+
+            if ($apuesta->getQuiniela() == $apuesta->getIdPartido()->getQuiniela()) {
+                if ($apuesta->getQuiniela() == 0 ||
+                    ($apuesta->getQuiniela() == 1 && $apuesta->getIdEquipo1()->getId() == $apuesta->getIdPartido()->getIdEquipo1()->getId()) ||
+                    ($apuesta->getQuiniela() == 2 && $apuesta->getIdEquipo2()->getId() == $apuesta->getIdPartido()->getIdEquipo2()->getId())
+                ) {
+                    $apuestas[]=$apuesta;
+                }
+            }
+        }
+
+        return $this->render('EnroporraBundle:Front:clasificacion_detalle.html.twig', array('arbitro' => $arbitro, 'pichichi' => $pichichi, 'goles' => $goles, 'apuestas' => $apuestas, 'porrista' => $porrista));
     }
 
     public function getAmigos()
