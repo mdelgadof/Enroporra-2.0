@@ -1,15 +1,6 @@
-#EnroporraBundle:
-#    resource: "@EnroporraBundle/Resources/config/routing.yml"
-#    prefix:   /
-
-_home:
-    pattern:  /
-    defaults: { _controller: EnroporraBundle:Default:index }
-
-_clasificacion:
-    pattern:  /clasificacion
-    defaults: { _controller: EnroporraBundle:Clasificacion:index }
-
+EnroporraBundle:
+    resource: "@EnroporraBundle/Resources/config/routing.yml"
+    prefix:   /
 
 # Internal routing configuration to handle ESI
 #_internal:

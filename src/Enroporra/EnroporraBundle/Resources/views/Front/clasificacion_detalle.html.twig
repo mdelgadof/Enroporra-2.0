@@ -1,0 +1,61 @@
+<br>
+{% if pichichi %}
+<span class='red'>PICHICHI DE {{ porrista.getIdCompeticion.getNombre|upper }}</span><br>
+<img src='{{ asset('bundles/enroporra/images/balon.gif') }}' width=16 height=16> <b>{{ pichichi.getNombre }} ({{ pichichi.getIdEquipo.getNombre }})</b> <span class='green'>{{ porrista.getIdCompeticion.getPuntosPorPichichi|number_format }} puntos</span>
+<br><br>
+{% endif %}
+
+{% if arbitro %}
+<span class='red'>ÁRBITRO DE LA FINAL</span><br>
+<img src='{{ asset('bundles/enroporra/images/silbato.gif') }}' width=16> <b>{{ arbitro.getNombre }}</b> <span class='green'>{{ porrista.getIdCompeticion.getPuntosPorArbitro|number_format }} puntos</span>
+<br><br>
+{% endif %}
+
+{% if goles %}
+<img src='{{ asset('bundles/enroporra/images/badges/' ~ porrista.getIdGoleador.getIdEquipo.getBandera) }}' width=16 height=16> <span class='red'>GOLES DE {{ porrista.getIdGoleador.getNombre|upper }}</span><br>
+{% for gol in goles %}
+<img src='{{ asset('bundles/enroporra/images/balon.gif') }}' width=16 height=16> {{ gol.getIdPartido.getIdEquipo1.getNombre }} <span class='red'>{{ gol.getIdPartido.getResultado1 }}-{{ gol.getIdPartido.getResultado2 }}</span> {{ gol.getIdPartido.getIdEquipo2.getNombre }}
+({{ gol.getIdPartido.getFecha|date("d/m/Y") }} {{ gol.getIdPartido.getHora|date("H:i") }}) <span class='green'>{{ porrista.getIdCompeticion.getPuntosPorGol }} puntos</span><br>
+{% endfor %}
+<br>
+{% endif %}
+
+{% for apuesta in apuestas %}
+<span class='red'>{{ apuesta.getIdPartido.getIdFase.rotulo|upper }}</span><br>
+<img src='{{ asset('bundles/enroporra/images/badges/' ~ apuesta.getIdPartido.getIdEquipo1.getBandera) }}' width=16 height=16> <b>{{ apuesta.getIdPartido.getIdEquipo1.getNombre|upper }}</b> <span class='red'>{{ apuesta.getIdPartido.getResultado1 }}</span>
+<img src='{{ asset('bundles/enroporra/images/badges/' ~ apuesta.getIdPartido.getIdEquipo2.getBandera) }}' width=16 height=16> <b>{{ apuesta.getIdPartido.getIdEquipo2.getNombre|upper }}</b> <span class='red'>{{ apuesta.getIdPartido.getResultado2 }}</span>
+{% if apuesta.getIdPartido.getIdFase.getFaseDeGrupos==0 and apuesta.getIdPartido.getResultado1==apuesta.getIdPartido.getResultado2 %}
+(gana
+    {% if apuesta.getIdPartido.getQuiniela==1 %}
+        {{ apuesta.getIdPartido.getIdEquipo1.getNombre }}
+    {% else %}
+        {{ apuesta.getIdPartido.getIdEquipo2.getNombre }}
+    {% endif %}
+por penaltis)
+{% endif %}
+({{ apuesta.getIdPartido.getFecha|date("d/m/Y") }} {{ apuesta.getIdPartido.getHora|date("H:i") }})<br>
+Apuesta de <span class='red'>{{ porrista.getNombre|capitalize }}</span>: {{ apuesta.getIdEquipo1.getNombre }} <span class='red'>{{ apuesta.getResultado1 }}</span> {{ apuesta.getIdEquipo2.getNombre }} <span class='red'>{{ apuesta.getResultado2 }}</span>
+{% if apuesta.getIdPartido.getIdFase.getFaseDeGrupos==0 and apuesta.getResultado1==apuesta.getResultado2 %}
+(gana
+    {% if apuesta.getQuiniela==1 %}
+        {{ apuesta.getIdEquipo1.getNombre }}
+    {% else %}
+        {{ apuesta.getIdEquipo2.getNombre }}
+    {% endif %}
+por penaltis)
+{% endif %}
+<br>
+Puntos por acertar
+{% if apuesta.getQuiniela==1 %}
+victoria de <span class='red'>{{ apuesta.getIdEquipo1.getNombre }}</span>
+{% elseif apuesta.getQuiniela==2 %}
+victoria de <span class='red'>{{ apuesta.getIdEquipo2.getNombre }}</span>
+{% else %}
+<span class='red'>empate</span>
+{% endif %}
+: <span class='green'>{{ apuesta.getIdPartido.getIdFase.getPuntosQuiniela|number_format }} punto{% if apuesta.getIdPartido.getIdFase.getPuntosQuiniela>1 %}s{% endif %}</span><br>
+{% if apuesta.getResultado1==apuesta.getIdPartido.getResultado1 and apuesta.getResultado2==apuesta.getIdPartido.getResultado2 %}
+Puntos por acertar <span class='red'>resultado</span>: <span class='green'>{{ apuesta.getIdPartido.getIdFase.getPuntosResultado }} puntos</span><br>
+{% endif %}
+<br>
+{% endfor%}

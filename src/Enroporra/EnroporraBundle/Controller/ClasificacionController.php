@@ -45,13 +45,78 @@ class ClasificacionController extends Controller
         );
     }
 
+    public function detalleAction($competicion, $nick)
+    {
+        $this->base = $this->get("enroporra.base");
+        $this->base->init($this->getDoctrine());
+
+        $arbitro = $pichichi = $goles = "";
+        $apuestas = array();
+
+        $repPorristas = $this->getDoctrine()->getRepository('EnroporraBundle:Porrista');
+        $repApuestas = $this->getDoctrine()->getRepository('EnroporraBundle:Apuesta');
+        $repGoles = $this->getDoctrine()->getRepository('EnroporraBundle:Gol');
+
+        $resPorrista = $repPorristas->createQueryBuilder('p')
+            ->where('p.pagado = :pagado AND p.nick = :nick AND p.idCompeticion = :idCompeticion')
+            ->setParameter('pagado', 1)
+            ->setParameter('nick', $nick)
+            ->setParameter('idCompeticion', $competicion)
+            ->getQuery()
+            ->getResult();
+        if (!count($resPorrista))
+            throw $this->createNotFoundException('Usuario no existente');
+
+        $porrista = $resPorrista[0];
+
+        // Acertar árbitro de la final: se rellena la variable $arbitro
+        if (($porrista->getIdArbitro() == $porrista->getIdCompeticion()->getIdArbitro()) && $porrista->getIdArbitro())
+            $arbitro = $porrista->getIdArbitro();
+
+        // Acertar Pichichi: se rellena la variable $pichichi
+        $cGoleador = new cGoleador($porrista->getIdGoleador(), $this->getDoctrine());
+        if ($porrista->getIdCompeticion()->getFinalizada() && $cGoleador->getEsPichichi())
+            $pichichi = $porrista->getIdGoleador();
+
+        // Puntos por cada gol del goleador elegido
+        $goles = $repGoles->createQueryBuilder('g')
+            ->where('g.idGoleador = :idGoleador')
+            ->setParameter('idGoleador', $porrista->getIdGoleador())
+            ->getQuery()
+            ->getResult();
+
+        // Puntos por cada partido acertado
+        $resApuestas = $repApuestas->createQueryBuilder('a')
+            ->where('a.idPorrista = :idPorrista')
+            ->setParameter('idPorrista', $porrista)
+            ->getQuery()
+            ->getResult();
+        foreach ($resApuestas as $apuesta) {
+            // Verificamos que el partido se ha disputado (de lo contrario tiene en el resultado un empate a -1)
+            if ($apuesta->getIdPartido()->getResultado1() < 0)
+                continue;
+
+            if ($apuesta->getQuiniela() == $apuesta->getIdPartido()->getQuiniela()) {
+                if ($apuesta->getQuiniela() == 0 ||
+                    ($apuesta->getQuiniela() == 1 && $apuesta->getIdEquipo1()->getId() == $apuesta->getIdPartido()->getIdEquipo1()->getId()) ||
+                    ($apuesta->getQuiniela() == 2 && $apuesta->getIdEquipo2()->getId() == $apuesta->getIdPartido()->getIdEquipo2()->getId())
+                ) {
+                    $apuestas[]=$apuesta;
+                }
+            }
+        }
+
+        return $this->render('EnroporraBundle:Front:clasificacion_detalle.html.twig', array('arbitro' => $arbitro, 'pichichi' => $pichichi, 'goles' => $goles, 'apuestas' => $apuestas, 'porrista' => $porrista));
+    }
+
     public function getAmigos()
     {
         $this->amigos = array();
         $cookieAmigos = $this->base->getCookieAmigos();
 
-        if (!strlen($cookieAmigos))
+        if (!strlen($cookieAmigos)) {
             return;
+        }
 
         $temp = explode(",", $cookieAmigos);
         if (!count($temp))
@@ -76,7 +141,7 @@ class ClasificacionController extends Controller
 
         $repPartidos = $this->getDoctrine()->getRepository('EnroporraBundle:Partido');
         $repPorristas = $this->getDoctrine()->getRepository('EnroporraBundle:Porrista');
-        $repGoleador = $this->getDoctrine()->getRepository('EnroporraBundle:Goleador');
+        $repApuestas = $this->getDoctrine()->getRepository('EnroporraBundle:Apuesta');
 
         $partidos = $repPartidos->createQueryBuilder('p')
             ->where('p.fecha <= :fecha', 'p.resultado1 >= :resultado1')
@@ -92,18 +157,23 @@ class ClasificacionController extends Controller
             $nombresExistentes = array();
             $goleadoresActuales = array();
 
-// Comentado hasta acometer cómo y dónde elegir cuáles son los próximos partidos para poner en la clasificación
-//            $comenzoSegundaFase = (date("Y-m-d H:i:s") > "2012-06-21 20:45:00");
-//            $condicionFase = ($comenzoSegundaFase) ? 'p.fase >= :fase' : 'p.fase = :fase';
-//
-//            $proximosPartidos = $repPartidos->createQueryBuilder('p')
-//                ->where('p.resultado1 = :resultado1', $condicionFase)
-//                ->setParameter('fase', 1)
-//                ->setParameter('resultado1', -1)
-//                ->orderBy('p.fecha', 'ASC', 'p.hora', 'ASC')
-//                ->setMaxResults($this->PROXIMOS_PARTIDOS)
-//                ->getQuery()
-//                ->getResult();
+            $comenzoSegundaFase = (date("Y-m-d H:i:s") > $this->base->getCompetition()->getFechaComienzoSegundaFase()->format('Y-m-d H:i:s'));
+            $condicionFase = ($comenzoSegundaFase) ? 'f.faseDeGrupos <= :fase' : 'f.faseDeGrupos = :fase';
+
+            $resProximosPartidos = $repPartidos->createQueryBuilder('p')
+                ->select('p.id')
+                ->leftJoin('p.idFase', 'f')
+                ->where('p.resultado1 = :resultado1', $condicionFase)
+                ->setParameter('fase', 1)
+                ->setParameter('resultado1', -1)
+                ->orderBy('p.fecha', 'ASC', 'p.hora', 'ASC')
+                ->setMaxResults($this->PROXIMOS_PARTIDOS)
+                ->getQuery()
+                ->getResult();
+            $proximosPartidos = array();
+            foreach ($resProximosPartidos as $proximoPartido) {
+                $proximosPartidos[] = $proximoPartido["id"];
+            }
 
             $porristasBD = $repPorristas->createQueryBuilder('p')
                 ->where('p.pagado = :pagado')
@@ -112,12 +182,27 @@ class ClasificacionController extends Controller
                 ->getResult();
 
             // Generamos un array de cPorrista que tiene métodos y variables extendidas a Porrista. Así no tocamos la Entity
-            $porristas = array();
+            $porristas = $porristasAmigos = array();
             foreach ($porristasBD as $porrista) {
                 $porristas[] = new cPorrista($porrista, $this->getDoctrine(), $this->base);
             }
 
             foreach ($porristas as $clave => $porrista) {
+
+                if ($tipo == "amigos" && !in_array(strtolower($porrista->getNick()), $this->amigos))
+                    continue;
+                else if ($tipo == "amigos")
+                    $porristasAmigos[] = $porrista;
+
+                if (count($proximosPartidos)) {
+                    $proximasApuestas = $repApuestas->createQueryBuilder('a')
+                        ->where('a.idPorrista = :idPorrista AND a.idPartido IN (:proximosPartidos)')
+                        ->setParameter('proximosPartidos', $proximosPartidos)
+                        ->setParameter('idPorrista', $porrista->getIdp())
+                        ->getQuery()
+                        ->getResult();
+                    $porristas[$clave]->setProximasApuestas($proximasApuestas);
+                }
 
                 $porristas[$clave]->setNombre($this->get("enroporra.apellidos_con_tilde")->convertir($porrista->getNombre() . " " . $porrista->getApellido()));
                 if (in_array($porrista->getNombre(), $nombresExistentes))
@@ -130,12 +215,10 @@ class ClasificacionController extends Controller
                 }
                 $porristas[$clave]->setGoleador($goleadoresActuales[$porrista->getIdGoleador()->getId()]);
                 $porristas[$clave]->calculaPuntos();
-
-                if ($tipo == "amigos") {
-                    if (!in_array(strtolower($porrista->getNick()), $this->amigos))
-                        array_splice($porristas, $clave, 1);
-                }
             }
+
+            if ($tipo == "amigos")
+                $porristas = $porristasAmigos;
 
             usort($porristas, array($this, "cmp"));
 
