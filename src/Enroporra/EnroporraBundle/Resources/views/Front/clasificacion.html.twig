@@ -35,29 +35,39 @@ Clasificación <span class='red'>{{ clasificacion.tipo }}</span> a día de hoy (
             <td width='20'></td><td align='center' bgColor='#FFFFFF' style='padding: 0px 0px 0px 10px;'>
                 <div id='enlace_{{ porrista.getNick|upper }}'><a alt='Ver los puntos que lleva {{ porrista.getNombre }}' href='javascript:verDetalle("{{ porrista.getNick|upper }}")'><img src='{{ asset('bundles/enroporra/images/bombilla.jpg') }}' alt='Ver los puntos que lleva {{ porrista.getNombre }}' width=32 height=32></a></div>
             </td><td align='center' bgColor='#FFFFFF'><a href='/cuenta/{{ porrista.getNick }}'><img src='{{ asset('bundles/enroporra/images/sobre.jpg') }}' alt='Ver la apuesta completa de {{ porrista.getNombre }}' width=32 height=32></a></td>
-            <td nowrap>&nbsp;Próximas apuestas&nbsp;</td>
-        </tr>
-        <tr><td colspan='5'>
-                <div id='detalle_{{ porrista.getNick|upper }}' style='display:none'><p></p></div>
-            </td>
-        </tr>
-{% endfor %}
-    </table>
-    <br><br>
+            <td nowrap>&nbsp;&nbsp;
+{% for proximaApuesta in porrista.proximasApuestas %}
+                    <img src='{{ asset('bundles/enroporra/images/badges/' ~ proximaApuesta.getIdEquipo1.getBandera) }}' width=20 height=20>
+                    <span class='red'><b>{{ proximaApuesta.getResultado1 }} - {{ proximaApuesta.getResultado2 }}</b></span>
+                    <img src='{{ asset('bundles/enroporra/images/badges/' ~ proximaApuesta.getIdEquipo2.getBandera) }}' width=20 height=20>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
 {% else %}
-    <p>Todavía no ha comenzado {{ base.competition.name }} en Enroporra :)</p>
+                    &nbsp;No hay más apuestas&nbsp;
+{% endfor %}
+                    &nbsp;&nbsp;
+                </td>
+            </tr>
+            <tr><td colspan='5'>
+                    <div id='detalle_{{ porrista.getNick|upper }}' style='display:none'><p></p></div>
+                </td>
+            </tr>
+{% endfor %}
+        </table>
+        <br><br>
+{% else %}
+        <p>Todavía no ha comenzado {{ base.competition.name }} en Enroporra :)</p>
 {% endif %}
 
-    <script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js'></script>
-    <script type='text/javascript'>
-    function verDetalle(nombre) {
-            $("#detalle_"+nombre).show();
-            $("#enlace_"+nombre).html("<a href='javascript:ocultarDetalle(\""+nombre+"\")'><img src='{{ asset('bundles/enroporra/images/bombillaoff.jpg') }}' alt='Ver los puntos que lleva "+nombre+"' width=32 height=32></a>");
-    }
-    function ocultarDetalle(nombre) {
-            $("#detalle_"+nombre).hide();
-            $("#enlace_"+nombre).html("<a href='javascript:verDetalle(\""+nombre+"\")'><img src='{{ asset('bundles/enroporra/images/bombilla.jpg') }}' alt='Ver los puntos que lleva "+nombre+"' width=32 height=32></a>");
-    }
+        <script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js'></script>
+        <script type='text/javascript'>
+        function verDetalle(nombre) {
+                $("#detalle_"+nombre).show();
+                $("#enlace_"+nombre).html("<a href='javascript:ocultarDetalle(\""+nombre+"\")'><img src='{{ asset('bundles/enroporra/images/bombillaoff.jpg') }}' alt='Ver los puntos que lleva "+nombre+"' width=32 height=32></a>");
+        }
+        function ocultarDetalle(nombre) {
+                $("#detalle_"+nombre).hide();
+                $("#enlace_"+nombre).html("<a href='javascript:verDetalle(\""+nombre+"\")'><img src='{{ asset('bundles/enroporra/images/bombilla.jpg') }}' alt='Ver los puntos que lleva "+nombre+"' width=32 height=32></a>");
+        }
 
-        </script>
+            </script>
 {% endblock %}

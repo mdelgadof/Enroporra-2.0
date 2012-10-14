@@ -77,7 +77,7 @@ class ClasificacionController extends Controller
 
         $repPartidos = $this->getDoctrine()->getRepository('EnroporraBundle:Partido');
         $repPorristas = $this->getDoctrine()->getRepository('EnroporraBundle:Porrista');
-        $repGoleador = $this->getDoctrine()->getRepository('EnroporraBundle:Goleador');
+        $repApuestas = $this->getDoctrine()->getRepository('EnroporraBundle:Apuesta');
 
         $partidos = $repPartidos->createQueryBuilder('p')
             ->where('p.fecha <= :fecha', 'p.resultado1 >= :resultado1')
@@ -93,12 +93,12 @@ class ClasificacionController extends Controller
             $nombresExistentes = array();
             $goleadoresActuales = array();
 
-
-            $comenzoSegundaFase = (date("Y-m-d H:i:s") > $this->base->getCompetition()->getFechaComienzoSegundaFase());
+            $comenzoSegundaFase = (date("Y-m-d H:i:s") > $this->base->getCompetition()->getFechaComienzoSegundaFase()->format('Y-m-d H:i:s'));
             $condicionFase = ($comenzoSegundaFase) ? 'f.faseDeGrupos <= :fase' : 'f.faseDeGrupos = :fase';
 
-            $proximosPartidos = $repPartidos->createQueryBuilder('p')
-                ->leftJoin('p.idFase','f')
+            $resProximosPartidos = $repPartidos->createQueryBuilder('p')
+                ->select('p.id')
+                ->leftJoin('p.idFase', 'f')
                 ->where('p.resultado1 = :resultado1', $condicionFase)
                 ->setParameter('fase', 1)
                 ->setParameter('resultado1', -1)
@@ -106,6 +106,9 @@ class ClasificacionController extends Controller
                 ->setMaxResults($this->PROXIMOS_PARTIDOS)
                 ->getQuery()
                 ->getResult();
+            foreach ($resProximosPartidos as $proximoPartido) {
+                $proximosPartidos[]=$proximoPartido["id"];
+            }
 
             $porristasBD = $repPorristas->createQueryBuilder('p')
                 ->where('p.pagado = :pagado')
@@ -125,6 +128,16 @@ class ClasificacionController extends Controller
                     continue;
                 else if ($tipo == "amigos")
                     $porristasAmigos[] = $porrista;
+
+                if (count($proximosPartidos)) {
+                    $proximasApuestas = $repApuestas->createQueryBuilder('a')
+                        ->where('a.idPorrista = :idPorrista AND a.idPartido IN (:proximosPartidos)')
+                        ->setParameter('proximosPartidos',$proximosPartidos)
+                        ->setParameter('idPorrista', $porrista->getIdp())
+                        ->getQuery()
+                        ->getResult();
+                    $porristas[$clave]->setProximasApuestas($proximasApuestas);
+                }
 
                 $porristas[$clave]->setNombre($this->get("enroporra.apellidos_con_tilde")->convertir($porrista->getNombre() . " " . $porrista->getApellido()));
                 if (in_array($porrista->getNombre(), $nombresExistentes))

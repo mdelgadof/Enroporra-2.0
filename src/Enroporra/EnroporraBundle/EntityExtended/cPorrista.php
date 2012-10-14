@@ -18,6 +18,7 @@ class cPorrista extends Porrista
     private $em;
     private $base;
     private $idp;
+    private $proximas_apuestas;
 
     function __construct($porrista, $em, $base)
     {
@@ -33,6 +34,7 @@ class cPorrista extends Porrista
         $this->setTelefono($porrista->getTelefono());
         $this->setEmail($porrista->getEmail());
         $this->setComisionero($porrista->getComisionero());
+        $this->setProximasApuestas(array());
         $this->em = $em;
         $this->base = $base;
     }
@@ -211,6 +213,28 @@ class cPorrista extends Porrista
     public function getGoleador()
     {
         return $this->goleador;
+    }
+
+    /**
+     * Set proximas apuestas
+     *
+     * @param array $proximasApuestas
+     * @return cPorrista
+     */
+    public function setProximasApuestas($proximasApuestas)
+    {
+        $this->proximas_apuestas = $proximasApuestas;
+        return $this;
+    }
+
+    /**
+     * Get Proximas Apuestas
+     *
+     * @return array
+     */
+    public function getProximasApuestas()
+    {
+        return $this->proximas_apuestas;
     }
 
     public function calculaPuntos()
