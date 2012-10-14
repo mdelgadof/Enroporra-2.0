@@ -45,11 +45,43 @@ class ClasificacionController extends Controller
         );
     }
 
-    public function detalleAction($competicion,$nick) {
+    public function detalleAction($competicion, $nick)
+    {
         $this->base = $this->get("enroporra.base");
         $this->base->init($this->getDoctrine());
-        $detalle = $competicion." ".$nick;
-        return $this->render('EnroporraBundle:Front:clasificacion_detalle.html.twig', array('detalle' => $detalle));
+
+        $arbitro = $pichichi = $goles = $apuestas = "";
+
+        $repPorristas = $this->getDoctrine()->getRepository('EnroporraBundle:Porrista');
+        $repApuestas = $this->getDoctrine()->getRepository('EnroporraBundle:Apuesta');
+
+        $resPorrista = $repPorristas->createQueryBuilder('p')
+            ->where('p.pagado = :pagado AND p.nick = :nick AND p.idCompeticion = :idCompeticion')
+            ->setParameter('pagado', 1)
+            ->setParameter('nick', $nick)
+            ->setParameter('idCompeticion', $competicion)
+            ->getQuery()
+            ->getResult();
+        if (!count($resPorrista))
+            throw $this->createNotFoundException('Usuario no existente');
+
+        $porrista = $resPorrista[0];
+
+        // Acertar árbitro de la final: se rellena la variable $arbitro
+        if (($porrista->getIdArbitro() == $porrista->getIdCompeticion()->getIdArbitro()) && $porrista->getIdArbitro())
+            $arbitro = $porrista->getIdArbitro();
+
+        // Acertar Pichichi: se rellena la variable $pichichi
+        $cGoleador = new cGoleador($porrista->getIdGoleador(), $this->getDoctrine());
+        if ($porrista->getIdCompeticion()->getFinalizada() && $cGoleador->getEsPichichi())
+            $pichichi = $porrista->getIdGoleador();
+
+
+        // Puntos por cada gol del goleador elegido
+        /*$puntos += ($this->getGoleador()->getGoles() * $this->base->getCompetition()->getPuntosPorGol());
+        */
+
+        return $this->render('EnroporraBundle:Front:clasificacion_detalle.html.twig', array('arbitro' => $arbitro, 'pichichi' => $pichichi, 'porrista' => $porrista));
     }
 
     public function getAmigos()
@@ -113,9 +145,9 @@ class ClasificacionController extends Controller
                 ->setMaxResults($this->PROXIMOS_PARTIDOS)
                 ->getQuery()
                 ->getResult();
-            $proximosPartidos=array();
+            $proximosPartidos = array();
             foreach ($resProximosPartidos as $proximoPartido) {
-                $proximosPartidos[]=$proximoPartido["id"];
+                $proximosPartidos[] = $proximoPartido["id"];
             }
 
             $porristasBD = $repPorristas->createQueryBuilder('p')
@@ -140,7 +172,7 @@ class ClasificacionController extends Controller
                 if (count($proximosPartidos)) {
                     $proximasApuestas = $repApuestas->createQueryBuilder('a')
                         ->where('a.idPorrista = :idPorrista AND a.idPartido IN (:proximosPartidos)')
-                        ->setParameter('proximosPartidos',$proximosPartidos)
+                        ->setParameter('proximosPartidos', $proximosPartidos)
                         ->setParameter('idPorrista', $porrista->getIdp())
                         ->getQuery()
                         ->getResult();
