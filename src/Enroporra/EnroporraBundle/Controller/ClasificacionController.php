@@ -45,6 +45,13 @@ class ClasificacionController extends Controller
         );
     }
 
+    public function detalleAction($competicion,$nick) {
+        $this->base = $this->get("enroporra.base");
+        $this->base->init($this->getDoctrine());
+        $detalle = $competicion." ".$nick;
+        return $this->render('EnroporraBundle:Front:clasificacion_detalle.html.twig', array('detalle' => $detalle));
+    }
+
     public function getAmigos()
     {
         $this->amigos = array();
