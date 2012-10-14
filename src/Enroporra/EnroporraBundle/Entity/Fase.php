@@ -22,6 +22,13 @@ class Fase
     private $id;
 
     /**
+     * @var boolean $faseDeGrupos
+     *
+     * @ORM\Column(name="fase_de_grupos", type="boolean", nullable=false)
+     */
+    private $faseDeGrupos;
+
+    /**
      * @var decimal $puntosQuiniela
      *
      * @ORM\Column(name="puntos_quiniela", type="decimal", nullable=false)
@@ -62,6 +69,28 @@ class Fase
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set faseDeGrupos
+     *
+     * @param boolean $faseDeGrupos
+     * @return Fase
+     */
+    public function setFaseDeGrupos($faseDeGrupos)
+    {
+        $this->faseDeGrupos = $faseDeGrupos;
+        return $this;
+    }
+
+    /**
+     * Get faseDeGrupos
+     *
+     * @return boolean 
+     */
+    public function getFaseDeGrupos()
+    {
+        return $this->faseDeGrupos;
     }
 
     /**

@@ -93,18 +93,19 @@ class ClasificacionController extends Controller
             $nombresExistentes = array();
             $goleadoresActuales = array();
 
-// Comentado hasta acometer cómo y dónde elegir cuáles son los próximos partidos para poner en la clasificación
-//            $comenzoSegundaFase = (date("Y-m-d H:i:s") > "2012-06-21 20:45:00");
-//            $condicionFase = ($comenzoSegundaFase) ? 'p.fase >= :fase' : 'p.fase = :fase';
-//
-//            $proximosPartidos = $repPartidos->createQueryBuilder('p')
-//                ->where('p.resultado1 = :resultado1', $condicionFase)
-//                ->setParameter('fase', 1)
-//                ->setParameter('resultado1', -1)
-//                ->orderBy('p.fecha', 'ASC', 'p.hora', 'ASC')
-//                ->setMaxResults($this->PROXIMOS_PARTIDOS)
-//                ->getQuery()
-//                ->getResult();
+
+            $comenzoSegundaFase = (date("Y-m-d H:i:s") > $this->base->getCompetition()->getFechaComienzoSegundaFase());
+            $condicionFase = ($comenzoSegundaFase) ? 'f.faseDeGrupos <= :fase' : 'f.faseDeGrupos = :fase';
+
+            $proximosPartidos = $repPartidos->createQueryBuilder('p')
+                ->leftJoin('p.idFase','f')
+                ->where('p.resultado1 = :resultado1', $condicionFase)
+                ->setParameter('fase', 1)
+                ->setParameter('resultado1', -1)
+                ->orderBy('p.fecha', 'ASC', 'p.hora', 'ASC')
+                ->setMaxResults($this->PROXIMOS_PARTIDOS)
+                ->getQuery()
+                ->getResult();
 
             $porristasBD = $repPorristas->createQueryBuilder('p')
                 ->where('p.pagado = :pagado')
