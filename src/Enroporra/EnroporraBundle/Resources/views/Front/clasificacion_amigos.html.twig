@@ -10,7 +10,14 @@
 	repartir ningún premio, ya que para esto solo vale la <a href='/clasificacion'>clasificación general</a></p>
 {% endblock %}
 
-{% block listado_participantes %}Aquí va el listado{% endblock %}
+{% block listado_participantes %}
+<table>
+{% for participante in participantes %}
+<tr><td><input type='checkbox' value='{{ participante.nick }}' onClick='amigar(this)' {{ participante.checked }}> {{ participante.nombre }}&nbsp;&nbsp;&nbsp;</td>
+<td><div id='{{ participante.nick }}'></div></td></tr>
+{% endfor %}
+</table><br><br>
+{% endblock %}
 
 {% block javascript_listado_participantes %}
 <script type='text/javascript'>
@@ -34,4 +41,3 @@
 	}
 </script>
 {% endblock %}
-

@@ -41,7 +41,7 @@ class ClasificacionController extends Controller
 
         $this->clasificacion("amigos");
 
-        return $this->render('EnroporraBundle:Front:clasificacion_amigos.html.twig', array('base' => $this->base, 'clasificacion' => $this->clasificacion)
+        return $this->render('EnroporraBundle:Front:clasificacion_amigos.html.twig', array('base' => $this->base, 'clasificacion' => $this->clasificacion, 'participantes' => $this->getListadoParticipantes())
         );
     }
 
@@ -101,7 +101,7 @@ class ClasificacionController extends Controller
                     ($apuesta->getQuiniela() == 1 && $apuesta->getIdEquipo1()->getId() == $apuesta->getIdPartido()->getIdEquipo1()->getId()) ||
                     ($apuesta->getQuiniela() == 2 && $apuesta->getIdEquipo2()->getId() == $apuesta->getIdPartido()->getIdEquipo2()->getId())
                 ) {
-                    $apuestas[]=$apuesta;
+                    $apuestas[] = $apuesta;
                 }
             }
         }
@@ -253,6 +253,31 @@ class ClasificacionController extends Controller
 
             $this->clasificacion["porristas"] = $porristas;
         }
+    }
+
+    public function getListadoParticipantes()
+    {
+
+        $repPorristas = $this->getDoctrine()->getRepository('EnroporraBundle:Porrista');
+        $porristasBD = $repPorristas->createQueryBuilder('p')
+            ->where('p.pagado = :pagado')
+            ->setParameter('pagado', 1)
+            ->orderBy('p.nombre','ASC','p.apellido','ASC')
+            ->getQuery()
+            ->getResult();
+        $participantes = array();
+
+        foreach ($porristasBD as $porrista) {
+            $participante=array();
+            $participante["nick"]=$porrista->getNick();
+            $participante["nombre"]=$this->get("enroporra.apellidos_con_tilde")->convertir($porrista->getNombre() . " " . $porrista->getApellido());
+            if (in_array($porrista->getNick(),$this->amigos))
+                $participante["checked"]="checked";
+            else $participante["checked"]="";
+            $participantes[]=$participante;
+        }
+
+        return $participantes;
     }
 
 }
