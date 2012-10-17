@@ -1,0 +1,37 @@
+{# Plantilla de la home del front de Enroporra #}
+{% extends 'EnroporraBundle:Front:clasificacion.html.twig' %}
+
+{% block titular_listado_participantes %}<h1 class='red'>Listado total de participantes</h1><br>{% endblock %}
+
+{% block uso_listado_participantes %}
+        <p>Aquí tienes un listado de todos los participantes de <b>Enroporra</b>. Selecciona a tus amigos y conocidos
+	(o a los que quieras) y, recargando la página, podrás ver la clasificación solo con los nombres que tú hayas elegido.
+	Esperamos que te sirva, y te recordamos que esta clasificación parcial que se publica en AMIGOS no sirve a la hora de
+	repartir ningún premio, ya que para esto solo vale la <a href='/clasificacion'>clasificación general</a></p>
+{% endblock %}
+
+{% block listado_participantes %}Aquí va el listado{% endblock %}
+
+{% block javascript_listado_participantes %}
+<script type='text/javascript'>
+	function amigar(check) {
+
+		var date = new Date();
+		var time = date.getTime();
+
+		var valor = (check.checked) ? 1:0;
+		var nick = check.value;
+
+		$.ajax({
+			url: "ajax/actualiza_amigos.php",
+			data: "n="+nick+"&v="+valor+"&t="+time,
+			success: function(msg){
+				if (valor) $("#"+nick).html("<font color='green'>OK Añadido a tus amigos. Recarga la página para ver la clasificación</font>");
+				else $("#"+nick).html("<font color='red'>OK Eliminado de tus amigos. Recarga la página para ver la clasificación</font>");
+      		}
+      	});
+
+	}
+</script>
+{% endblock %}
+

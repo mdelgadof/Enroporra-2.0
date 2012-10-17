@@ -4,7 +4,7 @@
 {% block columna_derecha %}{% endblock %}
 {% block mensajes_extra %}{% endblock %}
 {% block cuerpo %}
-{%if clasificacion.numeroPartidos > 0 %}
+{%if clasificacion.numeroPartidos > 0 and ( clasificacion.tipo == 'completa' or (clasificacion.tipo == 'amigos' and base.getCookieAmigos) ) %}
 Clasificación <span class='red'>{{ clasificacion.tipo }}</span> a día de hoy (<span class='red'><b>{{ clasificacion.numeroPartidos}}</b></span> partidos disputados y apuntados) :<br><br>
 <table cellpadding=0 cellspacing=0 border=0>
 
@@ -54,10 +54,12 @@ Clasificación <span class='red'>{{ clasificacion.tipo }}</span> a día de hoy (
 {% endfor %}
         </table>
         <br><br>
+        {% block titular_listado_participantes %}{% endblock %}
 {% else %}
-        <p>Todavía no ha comenzado {{ base.competition.getNombre }} en Enroporra :)</p>
+        {%if clasificacion.numeroPartidos == 0 %}<p>Todavía no ha comenzado {{ base.competition.getNombre }} en Enroporra :)</p>{% endif %}
+        {% block uso_listado_participantes %}{% endblock %}
 {% endif %}
-
+{% block listado_participantes %}{% endblock %}
         <script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js'></script>
         <script type='text/javascript'>
         function verDetalle(nombre) {
@@ -82,4 +84,5 @@ Clasificación <span class='red'>{{ clasificacion.tipo }}</span> a día de hoy (
         }
 
             </script>
+        {% block javascript_listado_participantes %}{% endblock %}
 {% endblock %}

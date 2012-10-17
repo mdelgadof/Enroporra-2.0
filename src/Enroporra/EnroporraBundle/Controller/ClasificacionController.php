@@ -41,7 +41,7 @@ class ClasificacionController extends Controller
 
         $this->clasificacion("amigos");
 
-        return $this->render('EnroporraBundle:Front:clasificacion.html.twig', array('base' => $this->base, 'clasificacion' => $this->clasificacion)
+        return $this->render('EnroporraBundle:Front:clasificacion_amigos.html.twig', array('base' => $this->base, 'clasificacion' => $this->clasificacion)
         );
     }
 
