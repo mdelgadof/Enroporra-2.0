@@ -41,7 +41,7 @@ class ClasificacionController extends Controller
 
         $this->clasificacion("amigos");
 
-        return $this->render('EnroporraBundle:Front:clasificacion.html.twig', array('base' => $this->base, 'clasificacion' => $this->clasificacion)
+        return $this->render('EnroporraBundle:Front:clasificacion_amigos.html.twig', array('base' => $this->base, 'clasificacion' => $this->clasificacion, 'participantes' => $this->getListadoParticipantes())
         );
     }
 
@@ -101,12 +101,57 @@ class ClasificacionController extends Controller
                     ($apuesta->getQuiniela() == 1 && $apuesta->getIdEquipo1()->getId() == $apuesta->getIdPartido()->getIdEquipo1()->getId()) ||
                     ($apuesta->getQuiniela() == 2 && $apuesta->getIdEquipo2()->getId() == $apuesta->getIdPartido()->getIdEquipo2()->getId())
                 ) {
-                    $apuestas[]=$apuesta;
+                    $apuestas[] = $apuesta;
                 }
             }
         }
 
         return $this->render('EnroporraBundle:Front:clasificacion_detalle.html.twig', array('arbitro' => $arbitro, 'pichichi' => $pichichi, 'goles' => $goles, 'apuestas' => $apuestas, 'porrista' => $porrista));
+    }
+
+    public function setlistadoamigosAction($competicion, $nick, $valor)
+    {
+
+        $this->base = $this->get("enroporra.base");
+        $this->base->init($this->getDoctrine());
+
+        $repPorristas = $this->getDoctrine()->getRepository('EnroporraBundle:Porrista');
+
+        $resPorrista = $repPorristas->createQueryBuilder('p')
+            ->where('p.pagado = :pagado AND p.nick = :nick AND p.idCompeticion = :idCompeticion')
+            ->setParameter('pagado', 1)
+            ->setParameter('nick', $nick)
+            ->setParameter('idCompeticion', $competicion)
+            ->getQuery()
+            ->getResult();
+        if (!count($resPorrista))
+            throw $this->createNotFoundException('Usuario no existente');
+        if ($valor != 0 && $valor != 1)
+            throw $this->createNotFoundException('Valor no posible');
+
+        $amigosEnro = $this->base->getCookieAmigos();
+
+        if ($valor) {
+            if ($amigosEnro) {
+                if (strpos("," . $nick . ",", $amigosEnro) === false) {
+                    $amigosEnro.=$nick . ",";
+                }
+            }
+            else
+                $amigosEnro = "," . $nick . ",";
+        }
+        else {
+            if ($amigosEnro) {
+                $amigosEnro = str_replace("," . $nick . ",", ",", $amigosEnro);
+                $amigosEnro = str_replace("," . $nick . ",", ",", $amigosEnro);
+                if ($amigosEnro == ",")
+                    $amigosEnro = "";
+            }
+        }
+
+        setcookie("amigosEnro", $amigosEnro, time() + 60 * 60 * 24 * 30, "/");
+        $this->base->setCookieAmigos($amigosEnro);
+        return $this->render('EnroporraBundle:Front:clasificacion_amigos_setlistado.html.twig', array('amigosEnro' => $amigosEnro));
     }
 
     public function getAmigos()
@@ -253,6 +298,32 @@ class ClasificacionController extends Controller
 
             $this->clasificacion["porristas"] = $porristas;
         }
+    }
+
+    public function getListadoParticipantes()
+    {
+
+        $repPorristas = $this->getDoctrine()->getRepository('EnroporraBundle:Porrista');
+        $porristasBD = $repPorristas->createQueryBuilder('p')
+            ->where('p.pagado = :pagado')
+            ->setParameter('pagado', 1)
+            ->orderBy('p.nombre, p.apellido','ASC')
+            ->getQuery()
+            ->getResult();
+        $participantes = array();
+
+        foreach ($porristasBD as $porrista) {
+            $participante = array();
+            $participante["nick"] = $porrista->getNick();
+            $participante["nombre"] = $this->get("enroporra.apellidos_con_tilde")->convertir($porrista->getNombre() . " " . $porrista->getApellido());
+            if (in_array($porrista->getNick(), $this->amigos))
+                $participante["checked"] = "checked";
+            else
+                $participante["checked"] = "";
+            $participantes[] = $participante;
+        }
+
+        return $participantes;
     }
 
 }
