@@ -11,3 +11,4 @@ parameters:
     mailer_password: null
     locale: es
     secret: 7d00af71719af0731e7c0b8533f612ae6d579eea
+    contact_email: comisionporra@gmail.com
