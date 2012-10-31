@@ -30,7 +30,7 @@
 		var nick = check.value;
 
 		$.ajax({
-			url: "/app_dev.php/amigos/set_listado/{{ base.competition.getId }}/"+nick+"/"+valor,
+			url: "/app_dev.php/amigos/set_listado/{{ id_competicion }}/"+nick+"/"+valor,
 			//data: "t="+time,
 			success: function(msg){
 				if (valor) $("#"+nick).html("<font color='green'>OK Añadido a tus amigos. <a href='/amigos'>Recarga la página</a> para ver la clasificación</font>");

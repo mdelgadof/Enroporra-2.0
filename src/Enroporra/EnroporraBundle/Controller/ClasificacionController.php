@@ -202,7 +202,7 @@ class ClasificacionController extends Controller
             $nombresExistentes = array();
             $goleadoresActuales = array();
 
-            $comenzoSegundaFase = (date("Y-m-d H:i:s") > $this->base->getCompetition()->getFechaComienzoSegundaFase()->format('Y-m-d H:i:s'));
+            $comenzoSegundaFase = (date("Y-m-d H:i:s") > $this->container->getParameter('enroporra_ca_fecha_comienzo_fase2'));
             $condicionFase = ($comenzoSegundaFase) ? 'f.faseDeGrupos <= :fase' : 'f.faseDeGrupos = :fase';
 
             $resProximosPartidos = $repPartidos->createQueryBuilder('p')
@@ -229,7 +229,7 @@ class ClasificacionController extends Controller
             // Generamos un array de cPorrista que tiene métodos y variables extendidas a Porrista. Así no tocamos la Entity
             $porristas = $porristasAmigos = array();
             foreach ($porristasBD as $porrista) {
-                $porristas[] = new cPorrista($porrista, $this->getDoctrine(), $this->base);
+                $porristas[] = new cPorrista($porrista, $this->getDoctrine(), $this->container);
             }
 
             foreach ($porristas as $clave => $porrista) {
@@ -307,7 +307,7 @@ class ClasificacionController extends Controller
         $porristasBD = $repPorristas->createQueryBuilder('p')
             ->where('p.pagado = :pagado')
             ->setParameter('pagado', 1)
-            ->orderBy('p.nombre, p.apellido','ASC')
+            ->orderBy('p.nombre, p.apellido', 'ASC')
             ->getQuery()
             ->getResult();
         $participantes = array();
