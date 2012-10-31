@@ -9,7 +9,6 @@ use Enroporra\EnroporraBundle\EntityExtended\cGoleador;
 class ClasificacionController extends Controller
 {
 
-    public $base;
     public $clasificacion;
     public $PROXIMOS_PARTIDOS;
     public $amigos;
@@ -21,35 +20,26 @@ class ClasificacionController extends Controller
 
     public function indexAction()
     {
-        // Estas dos líneas van aquí porque no las puedo meter en el constructor. Dice que no puedo aplicar el método get y sospecho que es porque no ha terminado todavía de construir el objeto
-        $this->base = $this->get("enroporra.base");
-        $this->base->init($this->getDoctrine());
         $this->getAmigos();
 
         $this->clasificacion("completa");
 
-        return $this->render('EnroporraBundle:Front:clasificacion.html.twig', array('base' => $this->base, 'clasificacion' => $this->clasificacion)
+        return $this->render('EnroporraBundle:Front:clasificacion.html.twig', array('clasificacion' => $this->clasificacion)
         );
     }
 
     public function amigosAction()
     {
-        // Estas dos líneas van aquí porque no las puedo meter en el constructor. Dice que no puedo aplicar el método get y sospecho que es porque no ha terminado todavía de construir el objeto
-        $this->base = $this->get("enroporra.base");
-        $this->base->init($this->getDoctrine());
         $this->getAmigos();
 
         $this->clasificacion("amigos");
 
-        return $this->render('EnroporraBundle:Front:clasificacion_amigos.html.twig', array('base' => $this->base, 'clasificacion' => $this->clasificacion, 'participantes' => $this->getListadoParticipantes())
+        return $this->render('EnroporraBundle:Front:clasificacion_amigos.html.twig', array('clasificacion' => $this->clasificacion, 'participantes' => $this->getListadoParticipantes())
         );
     }
 
     public function detalleAction($competicion, $nick)
     {
-        $this->base = $this->get("enroporra.base");
-        $this->base->init($this->getDoctrine());
-
         $arbitro = $pichichi = $goles = "";
         $apuestas = array();
 
@@ -112,9 +102,6 @@ class ClasificacionController extends Controller
     public function setlistadoamigosAction($competicion, $nick, $valor)
     {
 
-        $this->base = $this->get("enroporra.base");
-        $this->base->init($this->getDoctrine());
-
         $repPorristas = $this->getDoctrine()->getRepository('EnroporraBundle:Porrista');
 
         $resPorrista = $repPorristas->createQueryBuilder('p')
@@ -129,7 +116,7 @@ class ClasificacionController extends Controller
         if ($valor != 0 && $valor != 1)
             throw $this->createNotFoundException('Valor no posible');
 
-        $amigosEnro = $this->base->getCookieAmigos();
+        $amigosEnro = $this->getRequest()->cookies->get("amigosEnro");
 
         if ($valor) {
             if ($amigosEnro) {
@@ -150,14 +137,13 @@ class ClasificacionController extends Controller
         }
 
         setcookie("amigosEnro", $amigosEnro, time() + 60 * 60 * 24 * 30, "/");
-        $this->base->setCookieAmigos($amigosEnro);
         return $this->render('EnroporraBundle:Front:clasificacion_amigos_setlistado.html.twig', array('amigosEnro' => $amigosEnro));
     }
 
     public function getAmigos()
     {
         $this->amigos = array();
-        $cookieAmigos = $this->base->getCookieAmigos();
+        $cookieAmigos = $this->getRequest()->cookies->get("amigosEnro");
 
         if (!strlen($cookieAmigos)) {
             return;
@@ -279,7 +265,8 @@ class ClasificacionController extends Controller
                     $porristas[$clave]->setBgColor("#EEEEEE");
                     $par = true;
                 }
-                if (isset($this->base->cookieNick) && strtolower($porrista->getNick()) == strtolower($this->base->cookieNick)) {
+                $nickRegistrado = $this->getRequest()->cookies->get("nickRegistrado");
+                if ($nickRegistrado && strtolower($porrista->getNick()) == strtolower($nickRegistrado)) {
                     $porristas[$clave]->setBgColor("#FFFF00");
                 } else if ($tipo == "completa" && in_array(strtolower($porrista->getNick()), $this->amigos)) {
                     $porristas[$clave]->setBgColor("#DDAA33");
@@ -316,7 +303,7 @@ class ClasificacionController extends Controller
             $participante = array();
             $participante["nick"] = $porrista->getNick();
             $participante["nombre"] = $this->get("enroporra.apellidos_con_tilde")->convertir($porrista->getNombre() . " " . $porrista->getApellido());
-            if (in_array($porrista->getNick(), $this->amigos))
+            if (in_array(strtolower($porrista->getNick()), $this->amigos))
                 $participante["checked"] = "checked";
             else
                 $participante["checked"] = "";
