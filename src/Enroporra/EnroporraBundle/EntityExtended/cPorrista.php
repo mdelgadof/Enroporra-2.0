@@ -16,11 +16,11 @@ class cPorrista extends Porrista
     private $goleador;
     private $segunda_fase;
     private $em;
-    private $base;
+    private $container;
     private $idp;
     private $proximas_apuestas;
 
-    function __construct($porrista, $em, $base)
+    function __construct($porrista, $em, $container)
     {
         $this->setIdp($porrista->getId());
         $this->setNombre($porrista->getNombre());
@@ -36,7 +36,7 @@ class cPorrista extends Porrista
         $this->setComisionero($porrista->getComisionero());
         $this->setProximasApuestas(array());
         $this->em = $em;
-        $this->base = $base;
+        $this->container = $container;
     }
 
     /**
@@ -243,16 +243,16 @@ class cPorrista extends Porrista
         $puntos = 0;
 
         // Puntos por acertar árbitro de la final
-        if (($this->getIdArbitro() == $this->base->getCompetition()->getIdArbitro()) && $this->getIdArbitro())
-            $puntos+=$this->base->getCompetition()->getPuntosPorArbitro();
+            if ($this->getIdArbitro() && ($this->getIdArbitro()->getId() == $this->container->getParameter('enroporra_ca_id_arbitro')))
+            $puntos+=$this->container->getParameter('enroporra_ca_puntos_por_arbitro');
 
         // Puntos por acertar Pichichi del campeonato
-        if ($this->base->getCompetition()->getFinalizada() && $this->getGoleador()->getEsPichichi()) {
-            $puntos += $this->base->getCompetition()->getPuntosPorPichichi();
+        if ($this->container->getParameter('enroporra_ca_finalizada') && $this->getGoleador()->getEsPichichi()) {
+            $puntos += $this->container->getParameter('enroporra_ca_puntos_por_pichichi');
         }
 
         // Puntos por cada gol del goleador elegido
-        $puntos += ($this->getGoleador()->getGoles() * $this->base->getCompetition()->getPuntosPorGol());
+        $puntos += ($this->getGoleador()->getGoles() * $this->container->getParameter('enroporra_ca_puntos_por_gol'));
 
         // Puntos por cada quiniela y resultados acertados, siempre que el equipo ganador coincida con el de la apuesta
 

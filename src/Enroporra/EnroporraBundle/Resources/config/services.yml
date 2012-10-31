@@ -1,15 +1,7 @@
 parameters:
-    enroporra.base.class: Enroporra\EnroporraBundle\Globales\BaseEnroporra
     enroporra.apellidos_con_tilde.class: Enroporra\EnroporraBundle\Globales\ApellidosConTilde
 
 services:
-    enroporra.base:
-        class: %enroporra.base.class%
-        #calls:
-        #    - [ __construct ]
-        #    - [ initAction ]
-        #defaults: { _controller: enroporra.base:initAction }
-        #arguments: [2]
     enroporra.apellidos_con_tilde:
         class: %enroporra.apellidos_con_tilde.class%
 #        arguments: [@service_id, "plain_value", %parameter%]

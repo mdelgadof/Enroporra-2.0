@@ -4,7 +4,7 @@
 {% block columna_derecha %}{% endblock %}
 {% block mensajes_extra %}{% endblock %}
 {% block cuerpo %}
-{%if clasificacion.numeroPartidos > 0 and ( clasificacion.tipo == 'completa' or (clasificacion.tipo == 'amigos' and base.getCookieAmigos) ) %}
+{%if clasificacion.numeroPartidos > 0 and ( clasificacion.tipo == 'completa' or (clasificacion.tipo == 'amigos' and app.request.cookies.has('amigosEnro')) ) %}
 Clasificación <span class='red'>{{ clasificacion.tipo }}</span> a día de hoy (<span class='red'><b>{{ clasificacion.numeroPartidos}}</b></span> partidos disputados y apuntados) :<br><br>
 <table cellpadding=0 cellspacing=0 border=0>
 
@@ -17,7 +17,7 @@ Clasificación <span class='red'>{{ clasificacion.tipo }}</span> a día de hoy (
 {% if porrista.getDestacado %}
                 <h2>&nbsp;<span class='red'><b>{{ porrista.getClasificacion }}</b></span></h2></td><td nowrap><h2>&nbsp;{{ porrista.getNombre }} [<span class='red'><b>{{ porrista.getPuntos }}</b></span>]&nbsp;</h2>
 {% else %}
-                &nbsp;<span class='red'><b>{{ porrista.getClasificacion }}</b></span></td><td nowrap>&nbsp;{{ porrista.getNombre|raw }} [<span class='red'><b>{{ porrista.getPuntos }}</b></span>]&nbsp;
+                &nbsp;<span class='red'><b>{{ porrista.getClasificacion }}</b></span></td><td nowrap>&nbsp;{{ porrista.getNombre }} [<span class='red'><b>{{ porrista.getPuntos }}</b></span>]&nbsp;
 {% endif %}
 {% if porrista.segundaFase == 'OK' %}
                 <span class='green'>2ª Fase OK</span>
@@ -56,7 +56,7 @@ Clasificación <span class='red'>{{ clasificacion.tipo }}</span> a día de hoy (
         <br><br>
         {% block titular_listado_participantes %}{% endblock %}
 {% else %}
-        {%if clasificacion.numeroPartidos == 0 %}<p>Todavía no ha comenzado {{ base.competition.getNombre }} en Enroporra :)</p>{% endif %}
+        {%if clasificacion.numeroPartidos == 0 %}<p>Todavía no ha comenzado {{ nombre_competicion }} en Enroporra :)</p>{% endif %}
         {% block uso_listado_participantes %}{% endblock %}
 {% endif %}
 {% block listado_participantes %}{% endblock %}
@@ -66,7 +66,7 @@ Clasificación <span class='red'>{{ clasificacion.tipo }}</span> a día de hoy (
                 $("#detalle_"+nombre).show();
                 if ($("#detalle_"+nombre).html()=="") {
                     $.ajax({
-                        url:   '/detalle/{{ base.competition.getId }}/'+nombre,
+                        url:   '/detalle/{{ id_competicion }}/'+nombre,
                         type:  'post',
                         beforeSend: function () {
                             $("#detalle_"+nombre).html("<p>Procesando, espere por favor...</p>");
