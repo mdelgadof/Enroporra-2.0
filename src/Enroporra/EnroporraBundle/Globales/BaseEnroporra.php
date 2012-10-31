@@ -8,8 +8,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class BaseEnroporra
 {
 
-    private $year;
-    private $banner;
     private $contact;
     private $active_competition;
     private $competition;
@@ -19,8 +17,6 @@ class BaseEnroporra
 
     public function init($em,$activeCompetition = 2)
     {
-        $this->year = date("Y");
-        $this->banner = rand(1, 12);
         $this->contact = "comisionporra@gmail.com";
         $this->active_competition = $activeCompetition;
 
@@ -32,16 +28,6 @@ class BaseEnroporra
         if (isset($_COOKIE["nickRegistrado"]))
             $this->setCookieNick($_COOKIE["nickRegistrado"]);
         date_default_timezone_set("Europe/Madrid");
-    }
-
-    public function getYear()
-    {
-        return $this->year;
-    }
-
-    public function getBanner()
-    {
-        return $this->banner;
     }
 
     public function getContact()
