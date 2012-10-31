@@ -12,6 +12,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  */
 class Configuration implements ConfigurationInterface
 {
+
     /**
      * {@inheritDoc}
      */
@@ -23,7 +24,18 @@ class Configuration implements ConfigurationInterface
         // Here you should define the parameters that are allowed to
         // configure your bundle. See the documentation linked above for
         // more information on that topic.
+        $rootNode
+            ->children()
+            ->scalarNode('banner')->defaultValue(rand(1,12))->end()
+            ->scalarNode('lolailo')->defaultValue("like a configuration boss")->end()
+            ->end();
+
+        /*$rootNode
+            ->children()
+            ->scalarNode('lolailo')->defaultValue("like a superboss")->end()
+            ->end();*/
 
         return $treeBuilder;
     }
+
 }

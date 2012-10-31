@@ -9,5 +9,7 @@ parameters:
     mailer_host: localhost
     mailer_user: null
     mailer_password: null
-    locale: en
+    locale: es
     secret: 7d00af71719af0731e7c0b8533f612ae6d579eea
+    enroporra.lolailo: like a parameter boss
+    enroporra.banner: -1

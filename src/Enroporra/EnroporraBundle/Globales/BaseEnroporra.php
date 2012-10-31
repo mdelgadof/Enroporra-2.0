@@ -3,6 +3,7 @@
 namespace Enroporra\EnroporraBundle\Globales;
 
 use Enroporra\EnroporraBundle\Entity\Competicion;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class BaseEnroporra
 {

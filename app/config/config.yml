@@ -57,3 +57,8 @@ swiftmailer:
     username:  %mailer_user%
     password:  %mailer_password%
     spool:     { type: memory }
+
+# Enroporra Configuration
+enroporra:
+    lolailo: %enroporra.lolailo%
+    banner: %enroporra.banner%
