@@ -12,7 +12,7 @@ Note: This is a free template released under the Creative Commons Attribution 3.
 <link href="{{ asset('bundles/enroporra/css/headers' ~ (random(11)+1) ~ '.css') }}" rel="stylesheet" type="text/css" />
 </head>
 <body>
-    {# base.debug|raw #}
+    {{ debug|default('')|raw }}
 <div id="container">
 	<!-- header -->
     <div id="header">
