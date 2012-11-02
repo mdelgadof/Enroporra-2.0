@@ -4,5 +4,21 @@
 {% block columna_derecha %}{% endblock %}
 {% block mensajes_extra %}{% endblock %}
 {% block cuerpo %}
-y esto es la apuesta
+{% if "now"|date("U")>fecha_comienzo_fase_1 and "now"|date("U")<fecha_fin_fase_1 %}
+<h1 class='red'>RIEN NE VA PLUS!</h1>
+<p><b>¡Ha empezado {{ nombre_competicion }}!</b> La Comisión de <b>Enroporra</b> ha cerrado las apuestas y ya no se admiten nuevos participantes.
+    Esta pantalla permanecerá cerrada hasta el comienzo de la fase de eliminatorias de {{ nombre_competicion }},
+    en la que todos los apostantes tendrán que rellenar los cruces de {{ primera_eliminatoria }} y sucesivos, y elegir al árbitro de la final.<br><br>
+    <b>¡Suerte a los participantes!</b> y, si no te ha dado tiempo a ser uno de ellos para {{ nombre_competicion }}, ¡te esperamos en {{ proxima_competicion }}!</p>
+{% elseif "now"|date("U")>fecha_comienzo_fase_2+2592000 %}
+<h1 class='red'>COMPETICIÓN CERRADA</h1>
+<p>Ya terminó <b>{{ nombre_competicion }}</b> hace tiempo. Todavía no están abiertas las apuestas de <b>{{ proxima_competicion }}</b>. Entendemos tus ansias, nosotros también queremos que llegue la siguiente Enroporra :)</p>
+{% elseif "now"|date("U")>fecha_comienzo_fase_2 %}
+<h1 class='red'>¡AHORA SÍ QUE LA SUERTE ESTÁ ECHADA!</h1>
+<p><b>Se cerró el plazo definitivo de apuestas</b> La Comisión de <b>Enroporra</b> ha cerrado las apuestas porque ya ha empezado la fase de eliminatorias de {{ nombre_competicion }}. De entre los apostantes que hayan rellenado esta segunda fase saldrá nuestro ganador. ¡Mucha suerte a todos!</p>
+{% elseif "now"|date("U")<fecha_comienzo_fase_1 %}
+todavía no ha empezado la fase 1: bloque de registro de nick + apuesta partidos primera fase + elección de pichichi
+{% elseif "now"|date("U")<fecha_comienzo_fase_2 %}
+todavía no ha empezado la fase 2 y ya ha terminado la 1: bloque de apuesta partidos eliminatorias + elección de árbitro
+{% endif %}
 {% endblock %}

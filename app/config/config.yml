@@ -23,11 +23,16 @@ twig:
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
     globals:
-      contact_email:      %contact_email%
-      nombre_competicion: %enroporra_ca_nombre%
-      id_competicion:     %enroporra_ca_id%
-      link_bases:         %enroporra_ca_link_bases%
-      link_partidos:      %enroporra_ca_link_partidos%
+      contact_email:         %contact_email%
+      nombre_competicion:    %enroporra_ca_nombre%
+      id_competicion:        %enroporra_ca_id%
+      link_bases:            %enroporra_ca_link_bases%
+      link_partidos:         %enroporra_ca_link_partidos%
+      fecha_comienzo_fase_1: %enroporra_ca_fecha_comienzo_fase1%
+      fecha_fin_fase_1:      %enroporra_ca_fecha_fin_fase1%
+      fecha_comienzo_fase_2: %enroporra_ca_fecha_comienzo_fase2%
+      primera_eliminatoria:  %enroporra_ca_string_primera_eliminatoria%
+      proxima_competicion:   %enroporra_ca_string_proxima_competicion%
 
 # Assetic Configuration
 assetic:
