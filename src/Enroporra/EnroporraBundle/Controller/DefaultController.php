@@ -12,8 +12,7 @@ class DefaultController extends Controller
         global $app;
         $repNoticia = $this->getDoctrine()->getRepository('EnroporraBundle:Noticia');
         $noticias = $repNoticia->findByActiva(1);
-        $debug = "-".$app."-";
-        return $this->render('EnroporraBundle:Front:index.html.twig',array('noticias' => $noticias, 'debug' => $debug));
+        return $this->render('EnroporraBundle:Front:index.html.twig',array('noticias' => $noticias));
     }
 
 }

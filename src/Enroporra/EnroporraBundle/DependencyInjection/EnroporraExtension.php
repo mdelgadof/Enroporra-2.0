@@ -23,9 +23,6 @@ class EnroporraExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $container->setParameter('enroporra.banner', rand(1,12));
-        $container->setParameter('enroporra.lolailo2', 'like a extension boss '.time());
-
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
 
