@@ -12,3 +12,4 @@ vendor
 vendor/*
 composer.phar
 app/config/parameters.ini
+/nbproject/*
