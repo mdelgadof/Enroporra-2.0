@@ -10,6 +10,10 @@ EnroporraBundle_amigos:
     pattern:  /amigos
     defaults: { _controller: EnroporraBundle:Clasificacion:amigos }
 
+EnroporraBundle_apuesta:
+    pattern:  /apuesta
+    defaults: { _controller: EnroporraBundle:Apuesta:index }
+
 EnroporraBundle_actualizaramigos:
     pattern:  /amigos/set_listado/{competicion}/{nick}/{valor}
     defaults: { _controller: EnroporraBundle:Clasificacion:setlistadoamigos }

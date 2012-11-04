@@ -9,12 +9,10 @@ class DefaultController extends Controller
 
     public function indexAction()
     {
+        global $app;
         $repNoticia = $this->getDoctrine()->getRepository('EnroporraBundle:Noticia');
         $noticias = $repNoticia->findByActiva(1);
-
-        return $this->render('EnroporraBundle:Front:index.html.twig',
-            array('noticias' => $noticias)
-        );
+        return $this->render('EnroporraBundle:Front:index.html.twig',array('noticias' => $noticias));
     }
 
 }
