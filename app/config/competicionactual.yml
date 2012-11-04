@@ -1,0 +1,20 @@
+parameters:
+    enroporra_ca_id: 2
+    enroporra_ca_nombre: la Eurocopa 2012
+    enroporra_ca_fecha_comienzo_fase1: 2012-06-08 17:30:00
+    enroporra_ca_fecha_fin_fase1: 2012-06-19 23:00:00
+    enroporra_ca_fecha_comienzo_fase2: 2012-06-21 20:30:00
+    enroporra_ca_finalizada: true
+    enroporra_ca_puntos_por_gol: 1.5
+    enroporra_ca_puntos_por_arbitro: 5
+    enroporra_ca_puntos_por_pichichi: 5
+    enroporra_ca_link_bases: /docs/bases_europorra_2012.pdf
+    enroporra_ca_link_partidos: /docs/partidos_euro2012.pdf
+    enroporra_ca_string_primera_eliminatoria: cuartos de final
+    enroporra_ca_string_proxima_competicion: el Mundial 2014
+    enroporra_ca_banco_nombre: Bankia
+    enroporra_ca_banco_cuenta: 2038 1900 17 3000 142806
+    enroporra_ca_banco_titular: Federico de la Torriente Gutiérrez
+    enroporra_ca_numero_partidos_eliminatorias: 7
+    enroporra_ca_id_arbitro: 208
+    enroporra_ca_id_partido_primera_eliminatoria: 225

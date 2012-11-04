@@ -1,0 +1,29 @@
+{# columna derecha con los Twits del usuario @enroporra #}
+<script charset="utf-8" src="http://widgets.twimg.com/j/2/widget.js"></script>
+<script>
+new TWTR.Widget({
+  version: 2,
+  type: 'profile',
+  rpp: 8,
+  interval: 30000,
+  width: 250,
+  height: 600,
+  theme: {
+    shell: {
+      background: '#862e54',
+      color: '#ffffff'
+    },
+    tweets: {
+      background: '#ffffff',
+      color: '#000000',
+      links: '#862e54'
+    }
+  },
+  features: {
+    scrollbar: true,
+    loop: false,
+    live: true,
+    behavior: 'all'
+  }
+}).render().setUser('comisionporra').start();
+</script>

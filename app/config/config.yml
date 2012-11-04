@@ -1,6 +1,7 @@
 imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
+    - { resource: competicionactual.yml }
 
 framework:
     #esi:             ~
@@ -21,6 +22,12 @@ framework:
 twig:
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
+    globals:
+      contact_email:      %contact_email%
+      nombre_competicion: %enroporra_ca_nombre%
+      id_competicion:     %enroporra_ca_id%
+      link_bases:         %enroporra_ca_link_bases%
+      link_partidos:      %enroporra_ca_link_partidos%
 
 # Assetic Configuration
 assetic:

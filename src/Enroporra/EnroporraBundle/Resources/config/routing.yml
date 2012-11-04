@@ -1,3 +1,19 @@
 EnroporraBundle_homepage:
     pattern:  /
     defaults: { _controller: EnroporraBundle:Default:index }
+
+EnroporraBundle_clasificacion:
+    pattern:  /clasificacion
+    defaults: { _controller: EnroporraBundle:Clasificacion:index }
+
+EnroporraBundle_amigos:
+    pattern:  /amigos
+    defaults: { _controller: EnroporraBundle:Clasificacion:amigos }
+
+EnroporraBundle_actualizaramigos:
+    pattern:  /amigos/set_listado/{competicion}/{nick}/{valor}
+    defaults: { _controller: EnroporraBundle:Clasificacion:setlistadoamigos }
+
+EnroporraBundle_detalles:
+    pattern:  /detalle/{competicion}/{nick}
+    defaults: { _controller: EnroporraBundle:Clasificacion:detalle }
